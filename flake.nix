@@ -28,27 +28,27 @@
     # Each exposes homeManagerModules.default
     # ================================================================
     blackmatter-nvim = {
-      url = "github:pleme-io/blackmatter-nvim";
+      url = "git+ssh://git@github.com/pleme-io/blackmatter-nvim.git";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     blackmatter-shell = {
-      url = "github:pleme-io/blackmatter-shell";
+      url = "git+ssh://git@github.com/pleme-io/blackmatter-shell.git";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     blackmatter-claude = {
-      url = "github:pleme-io/blackmatter-claude";
+      url = "git+ssh://git@github.com/pleme-io/blackmatter-claude.git";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     blackmatter-desktop = {
-      url = "github:pleme-io/blackmatter-desktop";
+      url = "git+ssh://git@github.com/pleme-io/blackmatter-desktop.git";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     blackmatter-security = {
-      url = "github:pleme-io/blackmatter-security";
+      url = "git+ssh://git@github.com/pleme-io/blackmatter-security.git";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     blackmatter-kubernetes = {
-      url = "github:pleme-io/blackmatter-kubernetes";
+      url = "git+ssh://git@github.com/pleme-io/blackmatter-kubernetes.git";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
