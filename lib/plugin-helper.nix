@@ -1,0 +1,305 @@
+# Plugin Helper - Generates Nix modules from simple plugin declarations
+# Eliminates repetitive boilerplate across 178+ plugin files
+# Supports lazy loading via lazy.nvim integration
+{
+  lib,
+  pkgs,
+}: let
+  inherit (lib) mkEnableOption mkIf mkMerge mkOption types;
+  inherit (lib) concatStringsSep optionalString;
+  inherit (builtins) toJSON;
+
+  # Lazy Loading Support - defined in let for proper scoping
+  # Convert Nix value to Lua syntax (recursive)
+  toLuaValue = lib.fix (self: val:
+    if builtins.isString val
+    then ''"${val}"''
+    else if builtins.isBool val
+    then
+      (
+        if val
+        then "true"
+        else "false"
+      )
+    else if builtins.isInt val
+    then toString val
+    else if builtins.isList val
+    then let
+      items = map self val;
+      joined = concatStringsSep ", " items;
+    in "{ ${joined} }"
+    else if builtins.isAttrs val
+    then let
+      # Convert attrset to Lua table
+      pairs = lib.mapAttrsToList (k: v: "${k} = ${self v}") val;
+      joined = concatStringsSep ", " pairs;
+    in "{ ${joined} }"
+    else throw "Unsupported Lua value type: ${builtins.typeOf val}");
+
+  # Generate lazy.nvim spec for a single plugin
+  # Returns Lua table as string
+  mkLazySpec = pluginDecl: let
+    author = pluginDecl.author;
+    name = pluginDecl.name;
+    lazySpec = pluginDecl.lazy or null;
+    configDir = pluginDecl.configDir or null;
+
+    # Determine if this plugin should be lazy loaded
+    hasLazySpec = lazySpec != null && (lazySpec.enable or false);
+
+    # Build the lazy.nvim spec
+    pluginName = "${author}/${name}";
+    # Use data directory for plugin location (matches where Nix installs them)
+    pluginDir = ''vim.fn.stdpath("data") .. "/site/pack/${author}/start/${name}"'';
+
+    # Build lazy loading triggers
+    eventSpec =
+      if hasLazySpec && (lazySpec.event or null) != null
+      then "  event = ${toLuaValue lazySpec.event},"
+      else "";
+
+    cmdSpec =
+      if hasLazySpec && (lazySpec.cmd or null) != null
+      then "  cmd = ${toLuaValue lazySpec.cmd},"
+      else "";
+
+    ftSpec =
+      if hasLazySpec && (lazySpec.ft or null) != null
+      then "  ft = ${toLuaValue lazySpec.ft},"
+      else "";
+
+    keysSpec =
+      if hasLazySpec && (lazySpec.keys or null) != null
+      then let
+        # Keys need special formatting: { "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find files" }
+        formatKey = keyDef:
+          if builtins.isAttrs keyDef
+          then let
+            key = keyDef.key or (throw "Key mapping must have 'key' field");
+            cmd = keyDef.cmd or "";
+            desc = keyDef.desc or "";
+            parts =
+              ["\"${key}\""]
+              ++ (lib.optional (cmd != "") "\"${cmd}\"")
+              ++ (lib.optional (desc != "") "desc = \"${desc}\"");
+            joined = concatStringsSep ", " parts;
+          in "{ ${joined} }"
+          else throw "Key spec must be an attrset with at least 'key' field";
+
+        keyMappings = map formatKey lazySpec.keys;
+        keysJoined = concatStringsSep ",\n    " keyMappings;
+      in "  keys = {\n    ${keysJoined}\n  },"
+      else "";
+
+    # Generate config callback for plugins with configDir
+    # lazy.nvim calls config() for both lazy and non-lazy plugins
+    configSpec =
+      if configDir != null
+      then let
+        # Replace dots with dashes in plugin name for Lua module path
+        # e.g., bufferline.nvim -> bufferline-nvim
+        nameWithDashes = lib.replaceStrings ["."] ["-"] name;
+        modulePath = "plugins.${author}.${nameWithDashes}";
+      in ''
+          config = function()
+            require("${modulePath}").setup()
+          end,''
+      else "";
+
+    # Set lazy = false for plugins without lazy specs (load immediately)
+    lazyFlag =
+      if !hasLazySpec
+      then "  lazy = false,"
+      else "";
+
+    # Optional priority for startup ordering (e.g. snacks.nvim needs 1000)
+    prioritySpec =
+      if (pluginDecl.priority or null) != null
+      then "  priority = ${toString pluginDecl.priority},"
+      else "";
+
+    # Combine all specs
+    allSpecs =
+      lib.filter (s: s != "") [
+        eventSpec
+        cmdSpec
+        ftSpec
+        keysSpec
+        lazyFlag
+        prioritySpec
+        configSpec
+      ];
+    specsJoined = concatStringsSep "\n" allSpecs;
+  in ''
+    {
+      "${pluginName}",
+      dir = ${pluginDir},
+    ${specsJoined}
+    }'';
+
+  # Generate complete lazy-plugins.lua file from all plugin declarations
+  mkLazyPluginsLua = pluginDecls: let
+    # Include ALL plugins - lazy.nvim needs to know about them all
+    # Plugins with lazy specs: lazy load based on triggers
+    # Plugins without lazy specs: lazy = false (load immediately)
+
+    # Generate spec for each plugin
+    specs = map mkLazySpec pluginDecls;
+    specsJoined = concatStringsSep ",\n" specs;
+  in ''
+    -- Auto-generated by Nix
+    -- ALL plugins are listed here for lazy.nvim to manage
+    -- Plugins with lazy specs: Load on demand (event, cmd, ft, keys)
+    -- Plugins without lazy specs: Load immediately (lazy = false)
+    -- DO NOT EDIT MANUALLY - changes will be overwritten
+
+    return {
+    ${specsJoined}
+    }
+  '';
+in {
+  # Main function: Convert simple plugin declaration to full Nix module
+  # Input: {
+  #   author = "nvim-lua";
+  #   name = "plenary.nvim";
+  #   ref = "master";
+  #   rev = "abc123...";
+  #   packages = [ pkgs.nodejs ];       # Optional: system packages to install
+  #   configDir = ./config;              # Optional: Lua config directory
+  #   pluginOverride = pkgs: pkgs.vimPlugins.foo; # Optional: use nixpkgs derivation instead of GitHub fetch
+  #   extraConfig = { ... };             # Optional: extra home-manager config
+  #   extraFiles = { ... };              # Optional: additional home.file entries
+  #   lazy = {                           # Optional: lazy loading specification
+  #     enable = true;                   # Enable lazy loading for this plugin
+  #     event = [ "VeryLazy" ];          # Load on event(s)
+  #     cmd = [ "Telescope" ];           # Load on command(s)
+  #     keys = [ { key = "<leader>ff"; cmd = "..."; desc = "..."; } ];
+  #     ft = [ "markdown" ];             # Load on filetype(s)
+  #   };
+  # }
+  mkPlugin = pluginDecl: {
+    lib,
+    config,
+    pkgs ? pkgs,
+    ...
+  }:
+    with lib; let
+      author = pluginDecl.author;
+      name = pluginDecl.name;
+      ref = pluginDecl.ref;
+      rev = pluginDecl.rev or "nixpkgs";
+
+      # Optional: use a pre-built nixpkgs derivation instead of fetching from GitHub
+      # When specified, skips fetchFromGitHub + buildVimPlugin entirely
+      pluginOverrideFn = pluginDecl.pluginOverride or null;
+
+      # Optional fields
+      packagesRaw = pluginDecl.packages or [];
+      configDir = pluginDecl.configDir or null;
+      extraConfig = pluginDecl.extraConfig or {};
+      extraFiles = pluginDecl.extraFiles or {};
+
+      # Handle packages field: can be list, function returning list, or function returning config
+      # Case 1: function pkgs -> [ pkgs.foo pkgs.bar ]  (regular packages)
+      # Case 2: function pkgs -> { home.file.... }       (mason.nvim style)
+      # Case 3: [ ... ] (not valid - must be function to access pkgs)
+      packagesIsFunction = builtins.isFunction packagesRaw;
+      packagesResult =
+        if packagesIsFunction
+        then packagesRaw pkgs
+        else packagesRaw;
+
+      # Check if result is a list (packages) or attrset (extraConfig)
+      packagesResultIsList = builtins.isList packagesResult;
+      packages =
+        if packagesResultIsList
+        then packagesResult
+        else [];
+      extraConfigFromPackages =
+        if !packagesResultIsList && packagesIsFunction
+        then packagesResult
+        else {};
+
+      # Common paths
+      common = import ../modules/home-manager/blackmatter/components/nvim/common;
+      url = "${common.baseRepoUrl}/${author}/${name}";
+      plugPath = "${common.basePlugPath}/${author}/start/${name}";
+
+      # Config path: .config/nvim/lua/plugins/author/name/
+      # Replace dots with dashes in plugin name to match Lua module naming
+      # e.g., bufferline.nvim -> bufferline-nvim
+      nameWithDashes = lib.replaceStrings ["."] ["-"] name;
+      configPath = "${common.configHome}/plugins/${author}/${nameWithDashes}";
+
+      # Module config
+      cfg = config.blackmatter.components.nvim.plugins.${author}.${name};
+
+      # Optional postPatch for fixing upstream issues
+      postPatch = pluginDecl.postPatch or "";
+
+      # Content hash for fetchFromGitHub (SRI format: sha256-...)
+      hash = pluginDecl.hash or null;
+
+      # Fetch plugin source: prefer fetchFromGitHub with hash (fast tarball),
+      # fall back to fetchGit without allRefs for unhashed plugins
+      src =
+        if hash != null
+        then
+          pkgs.fetchFromGitHub {
+            owner = author;
+            repo = name;
+            inherit rev hash;
+          }
+        else
+          builtins.fetchGit {
+            inherit ref rev url;
+          };
+
+      # Build plugin: use nixpkgs override if provided, otherwise fetch from GitHub
+      pluginDrv =
+        if pluginOverrideFn != null
+        then pluginOverrideFn pkgs
+        else pkgs.vimUtils.buildVimPlugin ({
+          pname = name;
+          version = "git-${builtins.substring 0 7 rev}";
+          inherit src;
+          doCheck = false;
+        } // lib.optionalAttrs (postPatch != "") { inherit postPatch; });
+
+      # Build home.file entries
+      baseFiles = {
+        "${plugPath}".source = pluginDrv;
+      };
+
+      configFiles =
+        if configDir != null
+        then {"${configPath}".source = configDir;}
+        else {};
+
+      allFiles = baseFiles // configFiles // extraFiles;
+    in {
+      options.blackmatter.components.nvim.plugins.${author}.${name} = {
+        enable = mkEnableOption "${author}/${name}";
+      };
+
+      config = mkMerge [
+        (mkIf cfg.enable {
+          # Install plugin and configs
+          home.file = allFiles;
+
+          # Install system packages if specified
+          home.packages =
+            if packages != []
+            then packages
+            else [];
+        })
+        # Extra config from plugin declaration (separate mkMerge item to avoid
+        # shallow // merge clobbering home.file when extraConfig sets home.file)
+        (mkIf cfg.enable extraConfig)
+        (mkIf cfg.enable extraConfigFromPackages)
+      ];
+    };
+
+  # Export lazy loading functions for use in nvim module
+  inherit toLuaValue mkLazySpec mkLazyPluginsLua;
+}

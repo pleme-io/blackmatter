@@ -1,0 +1,6 @@
+# Theme Registry
+{...}: {
+  imports = [
+    ./nord
+  ];
+}
