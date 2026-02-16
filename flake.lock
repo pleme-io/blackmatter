@@ -1,0 +1,269 @@
+{
+  "nodes": {
+    "blackmatter-claude": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1771260245,
+        "narHash": "sha256-EFrmXqQaxT43fJoqDBqmbZ5FXYh45DdYPEHGEChtx8A=",
+        "ref": "refs/heads/main",
+        "rev": "4db244bd2bac7edb2a143207abdddf5c8de68dc2",
+        "revCount": 1,
+        "type": "git",
+        "url": "ssh://git@github.com/pleme-io/blackmatter-claude.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/pleme-io/blackmatter-claude.git"
+      }
+    },
+    "blackmatter-desktop": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1771260246,
+        "narHash": "sha256-HGzH2JzjFk2Bc6mbmgwmv1GdEwPNj8sMn//DsXbr15w=",
+        "ref": "refs/heads/main",
+        "rev": "1f6f1856b6fd7e59c3e77af6416e352cff0ec08c",
+        "revCount": 1,
+        "type": "git",
+        "url": "ssh://git@github.com/pleme-io/blackmatter-desktop.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/pleme-io/blackmatter-desktop.git"
+      }
+    },
+    "blackmatter-kubernetes": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1771260246,
+        "narHash": "sha256-7KvNsO4qBUlj2HcxSUs6QkEJ1Qz074G3cW1BLeRAd6A=",
+        "ref": "refs/heads/main",
+        "rev": "534ecb2956c596d9a637d2dc8c97909034c660bb",
+        "revCount": 1,
+        "type": "git",
+        "url": "ssh://git@github.com/pleme-io/blackmatter-kubernetes.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/pleme-io/blackmatter-kubernetes.git"
+      }
+    },
+    "blackmatter-nvim": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1771260245,
+        "narHash": "sha256-mQ/doV9ol+isZnHF7j8w8DvhScu1MVYqthVUXkX/SjY=",
+        "ref": "refs/heads/main",
+        "rev": "7b7ebc763f527039ae74fec36aa1bdb5372cc4a8",
+        "revCount": 1,
+        "type": "git",
+        "url": "ssh://git@github.com/pleme-io/blackmatter-nvim.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/pleme-io/blackmatter-nvim.git"
+      }
+    },
+    "blackmatter-security": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1771260246,
+        "narHash": "sha256-HZEQ0iPb/MfUpd/+yTZrFHxWb8HcnL4h+dNrazU0PUw=",
+        "ref": "refs/heads/main",
+        "rev": "0e8efa4851412496676f5dffb365218e83c300f5",
+        "revCount": 1,
+        "type": "git",
+        "url": "ssh://git@github.com/pleme-io/blackmatter-security.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/pleme-io/blackmatter-security.git"
+      }
+    },
+    "blackmatter-shell": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1771260245,
+        "narHash": "sha256-UfRwvWgtYq4Tb1Sap//sumHc13xkB8OjgbezPZFZxo0=",
+        "ref": "refs/heads/main",
+        "rev": "a6c21cae716707dd3e1dbd6976221c5fd5086748",
+        "revCount": 1,
+        "type": "git",
+        "url": "ssh://git@github.com/pleme-io/blackmatter-shell.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/pleme-io/blackmatter-shell.git"
+      }
+    },
+    "claude-code": {
+      "inputs": {
+        "flake-utils": "flake-utils",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1771013219,
+        "narHash": "sha256-EyR1pOL4vWyefDij3/HyZd3qjG6gzfk2BcjbAFQiXdY=",
+        "owner": "sadjow",
+        "repo": "claude-code-nix",
+        "rev": "3f8cff15b530cc4f09ed2497932a66662f7a8422",
+        "type": "github"
+      },
+      "original": {
+        "owner": "sadjow",
+        "repo": "claude-code-nix",
+        "type": "github"
+      }
+    },
+    "fenix": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "rust-analyzer-src": "rust-analyzer-src"
+      },
+      "locked": {
+        "lastModified": 1771226183,
+        "narHash": "sha256-AbaMtaLbe37l2VI/KSRk63PuBnX/YDDFL0G1eFMbvwI=",
+        "owner": "nix-community",
+        "repo": "fenix",
+        "rev": "2e3759c5ef51f320eb0aaf83f2a32baae33db237",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "fenix",
+        "type": "github"
+      }
+    },
+    "flake-utils": {
+      "inputs": {
+        "systems": "systems"
+      },
+      "locked": {
+        "lastModified": 1731533236,
+        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1770562336,
+        "narHash": "sha256-ub1gpAONMFsT/GU2hV6ZWJjur8rJ6kKxdm9IlCT0j84=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "d6c71932130818840fc8fe9509cf50be8c64634f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "d6c71932130818840fc8fe9509cf50be8c64634f",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "blackmatter-claude": "blackmatter-claude",
+        "blackmatter-desktop": "blackmatter-desktop",
+        "blackmatter-kubernetes": "blackmatter-kubernetes",
+        "blackmatter-nvim": "blackmatter-nvim",
+        "blackmatter-security": "blackmatter-security",
+        "blackmatter-shell": "blackmatter-shell",
+        "claude-code": "claude-code",
+        "fenix": "fenix",
+        "nixpkgs": "nixpkgs",
+        "sops-nix": "sops-nix"
+      }
+    },
+    "rust-analyzer-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1771173722,
+        "narHash": "sha256-1TZROjtryMzOJHgHhAUQUoAMnnWal231G7gM1pfNlK4=",
+        "owner": "rust-lang",
+        "repo": "rust-analyzer",
+        "rev": "00a9173e57f5c4ba45e380ce065b31afb17436ad",
+        "type": "github"
+      },
+      "original": {
+        "owner": "rust-lang",
+        "ref": "nightly",
+        "repo": "rust-analyzer",
+        "type": "github"
+      }
+    },
+    "sops-nix": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1770683991,
+        "narHash": "sha256-xVfPvXDf9QN3Eh9dV+Lw6IkWG42KSuQ1u2260HKvpnc=",
+        "owner": "Mic92",
+        "repo": "sops-nix",
+        "rev": "8b89f44c2cc4581e402111d928869fe7ba9f7033",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Mic92",
+        "repo": "sops-nix",
+        "rev": "8b89f44c2cc4581e402111d928869fe7ba9f7033",
+        "type": "github"
+      }
+    },
+    "systems": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
