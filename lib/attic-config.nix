@@ -1,10 +1,10 @@
 # Attic Binary Cache Configuration
 # Single source of truth for Attic cache settings
 {
-  # Attic cache JWT token (expires 2027-01-02)
-  # Subject: nexus-ci
-  # Permissions: read, write, create cache, create route on all caches
-  token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3OTg5MjMwMjIsIm5iZiI6MTc2NzM2NTQyMiwic3ViIjoibmV4dXMtY2kiLCJodHRwczovL2p3dC5hdHRpYy5ycy92MSI6eyJjYWNoZXMiOnsiKiI6eyJyIjoxLCJ3IjoxLCJjYyI6MSwiY3IiOjF9fX19._pnRSRamWjGijv16yLSqeganhsM73XsKWpX-84xB4mw";
+  # Attic cache JWT token — stored in nix/secrets.yaml under attic/token
+  # Retrieve via: sops -d nix/secrets.yaml | jq -r '.attic.token'
+  # Do NOT hardcode tokens here — they expire and must be rotated
+  token = builtins.getEnv "ATTIC_TOKEN";
 
   # Cache configuration - new shared nix-cache namespace
   cache = {
