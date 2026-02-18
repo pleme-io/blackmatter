@@ -36,7 +36,13 @@ let
 
   # Default tokens (shared with services)
   defaultAtticToken = atticConfig.token;
-  defaultGhcrToken = "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";
+  defaultGhcrToken = let
+    ghcrEnv = builtins.getEnv "GHCR_TOKEN";
+    githubEnv = builtins.getEnv "GITHUB_TOKEN";
+  in
+    if ghcrEnv != "" then ghcrEnv
+    else if githubEnv != "" then githubEnv
+    else throw "GHCR_TOKEN environment variable must be set";
 
   # Standard build inputs for Rust tools
   defaultBuildInputs = with pkgs; [ openssl postgresql ];
