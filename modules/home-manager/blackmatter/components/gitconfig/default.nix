@@ -243,7 +243,7 @@ in {
           line-numbers-left-style = ${"\#"}4C566A
           line-numbers-right-style = ${"\#"}4C566A
           line-numbers-zero-style = ${"\#"}4C566A
-          blame-palette = ${"\#"}2E3440 ${"\#"}3B4252 ${"\#"}434C5E ${"\#"}4C566A
+          blame-palette = "${"\#"}2E3440 ${"\#"}3B4252 ${"\#"}434C5E ${"\#"}4C566A"
           merge-conflict-begin-symbol = ⌃
           merge-conflict-end-symbol = ⌄
           merge-conflict-ours-diff-header-style = ${"\#"}EBCB8B bold
