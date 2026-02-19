@@ -9,15 +9,15 @@
       "locked": {
         "lastModified": 1771420806,
         "narHash": "sha256-75qicuqc02QZGF9ogfE5kQN+PQcRPuTt8mZtk9JeoIM=",
-        "ref": "refs/heads/main",
+        "owner": "pleme-io",
+        "repo": "blackmatter-claude",
         "rev": "dc2efc05fddac09ad589eee0df61300575068e81",
-        "revCount": 2,
-        "type": "git",
-        "url": "ssh://git@github.com/pleme-io/blackmatter-claude.git"
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "ssh://git@github.com/pleme-io/blackmatter-claude.git"
+        "owner": "pleme-io",
+        "repo": "blackmatter-claude",
+        "type": "github"
       }
     },
     "blackmatter-desktop": {
@@ -29,15 +29,15 @@
       "locked": {
         "lastModified": 1771260246,
         "narHash": "sha256-HGzH2JzjFk2Bc6mbmgwmv1GdEwPNj8sMn//DsXbr15w=",
-        "ref": "refs/heads/main",
+        "owner": "pleme-io",
+        "repo": "blackmatter-desktop",
         "rev": "1f6f1856b6fd7e59c3e77af6416e352cff0ec08c",
-        "revCount": 1,
-        "type": "git",
-        "url": "ssh://git@github.com/pleme-io/blackmatter-desktop.git"
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "ssh://git@github.com/pleme-io/blackmatter-desktop.git"
+        "owner": "pleme-io",
+        "repo": "blackmatter-desktop",
+        "type": "github"
       }
     },
     "blackmatter-kubernetes": {
@@ -49,15 +49,15 @@
       "locked": {
         "lastModified": 1771260246,
         "narHash": "sha256-7KvNsO4qBUlj2HcxSUs6QkEJ1Qz074G3cW1BLeRAd6A=",
-        "ref": "refs/heads/main",
+        "owner": "pleme-io",
+        "repo": "blackmatter-kubernetes",
         "rev": "534ecb2956c596d9a637d2dc8c97909034c660bb",
-        "revCount": 1,
-        "type": "git",
-        "url": "ssh://git@github.com/pleme-io/blackmatter-kubernetes.git"
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "ssh://git@github.com/pleme-io/blackmatter-kubernetes.git"
+        "owner": "pleme-io",
+        "repo": "blackmatter-kubernetes",
+        "type": "github"
       }
     },
     "blackmatter-nvim": {
@@ -67,17 +67,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1771497644,
-        "narHash": "sha256-bHX9Ff4TBC2Tn7uBnTzw5a+M8DvfLJmzP7q46mp/M9I=",
-        "ref": "refs/heads/main",
-        "rev": "d3e7f20c7e5f0f77c2c3153b8401e96b84cce47d",
-        "revCount": 5,
-        "type": "git",
-        "url": "ssh://git@github.com/pleme-io/blackmatter-nvim.git"
+        "lastModified": 1771506579,
+        "narHash": "sha256-6Zu/i2UhrinZ4gdaFj4UD7jjER7bhyZ39ROWKJphctw=",
+        "owner": "pleme-io",
+        "repo": "blackmatter-nvim",
+        "rev": "b79f8a5b67411b880f992a18244073407c6cd734",
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "ssh://git@github.com/pleme-io/blackmatter-nvim.git"
+        "owner": "pleme-io",
+        "repo": "blackmatter-nvim",
+        "type": "github"
       }
     },
     "blackmatter-security": {
@@ -89,35 +89,38 @@
       "locked": {
         "lastModified": 1771260246,
         "narHash": "sha256-HZEQ0iPb/MfUpd/+yTZrFHxWb8HcnL4h+dNrazU0PUw=",
-        "ref": "refs/heads/main",
+        "owner": "pleme-io",
+        "repo": "blackmatter-security",
         "rev": "0e8efa4851412496676f5dffb365218e83c300f5",
-        "revCount": 1,
-        "type": "git",
-        "url": "ssh://git@github.com/pleme-io/blackmatter-security.git"
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "ssh://git@github.com/pleme-io/blackmatter-security.git"
+        "owner": "pleme-io",
+        "repo": "blackmatter-security",
+        "type": "github"
       }
     },
     "blackmatter-shell": {
       "inputs": {
+        "blackmatter-nvim": [
+          "blackmatter-nvim"
+        ],
         "nixpkgs": [
           "nixpkgs"
         ]
       },
       "locked": {
-        "lastModified": 1771497312,
-        "narHash": "sha256-h6Hk0Ar7SJGXSBVI5j11HN+RrwhgNuDKmgF6LfmfhmQ=",
-        "ref": "refs/heads/main",
-        "rev": "f00a389025b8d79e404c5a7c240d7e77a460b5d8",
-        "revCount": 7,
-        "type": "git",
-        "url": "ssh://git@github.com/pleme-io/blackmatter-shell.git"
+        "lastModified": 1771518559,
+        "narHash": "sha256-M27Gzc6atSKZAH037MDFt/oAXucLZdhx2j0eCh2UjRs=",
+        "owner": "pleme-io",
+        "repo": "blackmatter-shell",
+        "rev": "bd0228ae6027720e47ae0d873d9ec794a7fd25e6",
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "ssh://git@github.com/pleme-io/blackmatter-shell.git"
+        "owner": "pleme-io",
+        "repo": "blackmatter-shell",
+        "type": "github"
       }
     },
     "claude-code": {
