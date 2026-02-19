@@ -93,7 +93,7 @@
     # Shared library helpers
     lib = {
       pluginHelper = import ./lib/plugin-helper.nix;
-      shellHelper = import ./lib/shell-helper.nix;
+      # shellHelper lives in blackmatter-shell (canonical source)
     };
   };
 }
