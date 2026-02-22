@@ -18,37 +18,12 @@ in {
     blackmatter.components.shell.packages.enable = true; # Includes claude-code, ripgrep, etc.
     blackmatter.components.gitconfig.enable = true;
 
-    # Claude Code configuration (LSP servers)
+    # Claude Code configuration (LSP + MCP servers)
     blackmatter.components.claude.enable = true;
 
-    # Zoekt code search daemon — indexes repos for instant trigram search
-    blackmatter.components.claude.zoekt = {
-      enable = true;
-      repos = [
-        "/Users/drzzln/code/github/pleme-io/nexus"
-        "/Users/drzzln/code/github/pleme-io/codesearch"
-        "/Users/drzzln/code/github/drzln/pangea"
-        "/Users/drzzln/code/github/drzln/z9s"
-        "/Users/drzzln/code/github/drzln/vision"
-        "/Users/drzzln/code/nix-refs/nixpkgs"
-        "/Users/drzzln/code/nix-refs/home-manager"
-        "/Users/drzzln/code/nix-refs/nix-darwin"
-      ];
-    };
-
-    # Codesearch daemon — semantic code search with live file watching
-    blackmatter.components.claude.codesearch = {
-      enable = true;
-      repos = [
-        "/Users/drzzln/code/github/pleme-io/nexus"
-        "/Users/drzzln/code/github/pleme-io/codesearch"
-        "/Users/drzzln/code/github/drzln/pangea"
-        "/Users/drzzln/code/github/drzln/z9s"
-        "/Users/drzzln/code/github/drzln/vision"
-      ];
-    };
-
     # MCP servers for AI-assisted development
+    # Zoekt/codesearch daemons are managed by their own repos (zoekt-mcp, codesearch)
+    # and configured per-machine in the nix repo via services.zoekt.daemon / services.codesearch.daemon
     blackmatter.components.claude.mcp.zoektMcp.enable = true;
     blackmatter.components.claude.mcp.codesearch.enable = true;
     blackmatter.components.claude.mcp.github.enable = true;
