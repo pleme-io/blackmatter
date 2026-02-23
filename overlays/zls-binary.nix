@@ -1,8 +1,9 @@
-# ZLS pre-built binary overlay
-# The nixpkgs ZLS derivation fails in the Nix sandbox with:
+# ZLS pre-built binary overlay (Darwin only)
+# The nixpkgs ZLS derivation fails in the Nix sandbox on macOS with:
 #   ln: failed to create symbolic link '/p': Read-only file system
 # Use the official pre-built binary from GitHub releases instead.
-final: prev: {
+# On Linux, nixpkgs zls works fine — don't override it.
+final: prev: prev.lib.optionalAttrs prev.stdenv.isDarwin {
   zls = prev.stdenv.mkDerivation rec {
     pname = "zls";
     version = "0.15.1";
