@@ -88,6 +88,36 @@ in {
                   default = true;
                   description = "Automatically push built artifacts to cache";
                 };
+
+                url = mkOption {
+                  type = types.str;
+                  default = "https://cache.nixos.org";
+                  description = "Attic cache URL";
+                };
+
+                publicKeys = mkOption {
+                  type = types.listOf types.str;
+                  default = [];
+                  description = "Attic cache public keys";
+                };
+
+                tokenFile = mkOption {
+                  type = types.nullOr types.str;
+                  default = null;
+                  description = "Path to file containing Attic cache JWT token (read at runtime by post-build-hook)";
+                };
+
+                netrcFile = mkOption {
+                  type = types.nullOr types.str;
+                  default = null;
+                  description = "Path to netrc file for substituter auth and private repo fetching";
+                };
+
+                cacheName = mkOption {
+                  type = types.str;
+                  default = "default";
+                  description = "Attic cache name to push to";
+                };
               };
             };
 
@@ -192,6 +222,11 @@ in {
       atticCache = {
         enable = cfg.performance.atticCache.enable;
         enablePush = cfg.performance.atticCache.enablePush;
+        url = cfg.performance.atticCache.url;
+        publicKeys = cfg.performance.atticCache.publicKeys;
+        tokenFile = cfg.performance.atticCache.tokenFile;
+        netrcFile = cfg.performance.atticCache.netrcFile;
+        cacheName = cfg.performance.atticCache.cacheName;
       };
     };
 
