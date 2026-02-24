@@ -32,7 +32,7 @@
 
 let
   # Import centralized Attic configuration
-  atticConfig = import ./attic-config.nix;
+  atticConfig = import ./attic-config.nix {};
 
   # Default tokens (shared with services)
   defaultAtticToken = atticConfig.token;

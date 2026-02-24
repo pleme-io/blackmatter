@@ -59,7 +59,7 @@ in {
               '';
               example = {
                 "app.test" = "127.0.0.1";
-                "plo.quero.local" = "192.168.50.3";
+                "myhost.local" = "192.168.1.100";
               };
             };
 
@@ -71,7 +71,7 @@ in {
 
             resolverDomains = mkOption {
               type = types.listOf types.str;
-              default = ["local" "test" "quero.local"];
+              default = ["local" "test"];
               description = "Domains to create macOS resolver entries for";
             };
 
@@ -134,7 +134,7 @@ in {
       # DNS management aliases
       alias dns-status='sudo launchctl list | grep dnsmasq || echo "dnsmasq not running"'
       alias dns-restart='sudo launchctl kickstart -k system/org.nixos.dnsmasq'
-      alias dns-test='dig @127.0.0.1 plo.local'
+      alias dns-test='dig @127.0.0.1 localhost'
       alias dns-flush='sudo dscacheutil -flushcache'
 
       # Function to set local DNS

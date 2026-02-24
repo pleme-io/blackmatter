@@ -8,7 +8,7 @@
 with lib; let
   cfg = config.blackmatter.profiles.blizzard.nix;
   profileCfg = config.blackmatter.profiles.blizzard;
-  atticConfig = import ../../../../../../lib/attic-config.nix;
+  atticConfig = import ../../../../../../lib/attic-config.nix {};
 in {
   options.blackmatter.profiles.blizzard.nix = {
     performance = {

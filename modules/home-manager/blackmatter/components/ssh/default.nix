@@ -39,7 +39,7 @@ in {
 
       fqdn = mkOption {
         type = types.str;
-        default = "nix-builder.infrastructure.plo.quero.local";
+        default = "";
         description = "Fully qualified domain name for nix-builder";
       };
 
@@ -137,11 +137,6 @@ in {
           user = "admin";
           identityFile = "~/.ssh/id_ed25519";
         };
-        "plo.novaskyn.com" = {
-          hostname = "plo.novaskyn.com";
-          user = "luis";
-          proxyCommand = "cloudflared access ssh --hostname %h";
-        };
       };
     };
 
@@ -149,18 +144,18 @@ in {
       enable = mkOption {
         type = types.bool;
         default = false;
-        description = "Enable Cloudflare Tunnel SSH hosts (plo.novaskyn.com, zek.novaskyn.com)";
+        description = "Enable Cloudflare Tunnel SSH hosts";
       };
 
       user = mkOption {
         type = types.str;
-        default = "luis";
+        default = "";
         description = "Default SSH user for Cloudflare Tunnel hosts";
       };
 
       hosts = mkOption {
         type = types.listOf types.str;
-        default = ["plo" "zek"];
+        default = [];
         description = "List of hosts accessible via Cloudflare Tunnel (will be suffixed with .novaskyn.com)";
       };
     };
