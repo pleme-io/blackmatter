@@ -11,7 +11,6 @@ with lib; {
     ./env
     ./gitconfig
     ./hammerspoon
-    ./microservices
     ./packages
     ./ssh
     ./ssh-aliases
