@@ -56,19 +56,24 @@
       url = "github:pleme-io/blackmatter-services";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    blackmatter-ghostty = {
+      url = "github:pleme-io/blackmatter-ghostty";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, ... } @ inputs: {
     # Home-Manager module — imports core blackmatter + all extracted components
     homeManagerModules.blackmatter = { ... }: {
       imports = [
-        # Core: profiles, themes, inline components (ghostty, git, ssh, etc.)
+        # Core: profiles, themes, inline components (git, ssh, etc.)
         ./modules/home-manager/blackmatter
         # Extracted component repos
         inputs.blackmatter-nvim.homeManagerModules.default
         inputs.blackmatter-shell.homeManagerModules.default
         inputs.blackmatter-claude.homeManagerModules.default
         inputs.blackmatter-desktop.homeManagerModules.default
+        inputs.blackmatter-ghostty.homeManagerModules.default
         inputs.blackmatter-security.homeManagerModules.default
         inputs.blackmatter-kubernetes.homeManagerModules.default
         inputs.blackmatter-services.homeManagerModules.default
@@ -95,6 +100,7 @@
       myOverlays = [
         inputs.sops-nix.overlays.default
         inputs.claude-code.overlays.default
+        inputs.blackmatter-ghostty.overlays.default
         zoektMcpOverlay
         codesearchOverlay
       ] ++ import ./overlays;
