@@ -52,6 +52,10 @@
       url = "github:pleme-io/blackmatter-kubernetes";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    blackmatter-services = {
+      url = "github:pleme-io/blackmatter-services";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, ... } @ inputs: {
@@ -67,6 +71,7 @@
         inputs.blackmatter-desktop.homeManagerModules.default
         inputs.blackmatter-security.homeManagerModules.default
         inputs.blackmatter-kubernetes.homeManagerModules.default
+        inputs.blackmatter-services.homeManagerModules.default
       ];
     };
 
@@ -74,7 +79,14 @@
     darwinModules.blackmatter = import ./modules/darwin/blackmatter;
 
     # NixOS system module (NixOS profiles + NixOS-specific components)
-    nixosModules.blackmatter = import ./modules/nixos/blackmatter;
+    nixosModules.blackmatter = { ... }: {
+      imports = [
+        ./modules/nixos/blackmatter
+        inputs.blackmatter-security.nixosModules.default
+        inputs.blackmatter-services.nixosModules.default
+        inputs.blackmatter-kubernetes.nixosModules.k3s
+      ];
+    };
 
     # Combined overlay (sops-nix, claude-code, fenix-based tools, + local fixes)
     overlays = let

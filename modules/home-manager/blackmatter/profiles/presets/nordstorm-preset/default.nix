@@ -394,7 +394,7 @@ in {
 
     # Ghostty terminal with Nord theme (primary terminal)
     # Now using modular component instead of inline config
-    blackmatter.components.ghostty = {
+    blackmatter.components.desktop.ghostty = {
       enable = true;
       font = {
         family = "JetBrains Mono";

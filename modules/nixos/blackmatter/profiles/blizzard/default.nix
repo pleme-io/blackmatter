@@ -9,33 +9,28 @@ with lib; let
   cfg = config.blackmatter.profiles.blizzard;
 in {
   imports = [
-    ./displayManager
     ./virtualisation
     ./services
     ./security
     ./vpn
-    ./secrets
     ./networking
     ./bluetooth
     ./xserver
-    ./locale
-    ./limits
-    ./docker
     ./sound
-    ./boot
-    ./time
     ./nix
     ./nix-binary
     # Enhanced modules for full node configuration
     ./hardware
     ./networking-extended
     ./optimizations
-    ./k3s
     ./gpu
     ./cloudflared
     ./users-packages
     ./dns
     ./kubectl
+    ./laptop-server
+    ./server-monitoring
+    ./data-persistence
     ../../../../shared/nix-performance.nix
   ];
 
@@ -82,6 +77,20 @@ in {
       # Base configuration (all variants)
       (mkIf (cfg.enable)
         {
+          # Enable extracted components
+          blackmatter.components.systemLimits.enable = true;
+          blackmatter.components.bootTuning.enable = true;
+          blackmatter.components.dockerOptimizations.enable = true;
+
+          # Auto-set K3s role from blizzard variant
+          services.blackmatter.k3s.role = lib.mkIf config.services.blackmatter.k3s.enable (
+            lib.mkDefault (
+              if (cfg.variant == "agent" || cfg.variant == "workstation-agent")
+              then "agent"
+              else "server"
+            )
+          );
+
           # Enable high-performance Nix configuration
           nix.performance.enable = true;
 

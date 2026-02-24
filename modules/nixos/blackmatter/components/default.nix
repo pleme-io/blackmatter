@@ -11,5 +11,12 @@
     ./dnsmasq
     ./nix-builder
     ./nix-maintenance
+    ./system-limits
+    ./boot-tuning
+    ./docker-optimizations
+    ./system-time
+    ./system-locale
+    ./sops-secrets
+    ./base-system-tuning
   ];
 }

@@ -31,7 +31,7 @@ in {
     blackmatter.components.claude.mcp.fluxcd.enable = true;
 
     # General MCP server packages (installed to PATH)
-    blackmatter.components.mcp.enable = true;
+    blackmatter.components.claude.mcpPackages.enable = true;
 
     # Essential package sets
     blackmatter.components.packages.rust-renaissance.enable = true;

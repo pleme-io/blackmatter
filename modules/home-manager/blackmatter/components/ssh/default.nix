@@ -156,7 +156,13 @@ in {
       hosts = mkOption {
         type = types.listOf types.str;
         default = [];
-        description = "List of hosts accessible via Cloudflare Tunnel (will be suffixed with .novaskyn.com)";
+        description = "List of hosts accessible via Cloudflare Tunnel (will be suffixed with domainSuffix)";
+      };
+
+      domainSuffix = mkOption {
+        type = types.str;
+        default = "";
+        description = "Domain suffix for Cloudflare Tunnel hosts (e.g., 'example.com')";
       };
     };
 
@@ -250,9 +256,13 @@ in {
         }) cfg.extraHosts))
 
         # Cloudflare Tunnel SSH hosts
-        (mkIf cfg.cloudflareTunnel.enable (mkMerge (map (host: {
-          "${host}.novaskyn.com" = {
-            hostname = "${host}.novaskyn.com";
+        (mkIf cfg.cloudflareTunnel.enable (mkMerge (map (host: let
+          fqdn = if cfg.cloudflareTunnel.domainSuffix != ""
+            then "${host}.${cfg.cloudflareTunnel.domainSuffix}"
+            else host;
+        in {
+          "${fqdn}" = {
+            hostname = fqdn;
             user = cfg.cloudflareTunnel.user;
             proxyCommand = "${pkgs.cloudflared}/bin/cloudflared access ssh --hostname %h";
             extraOptions = {

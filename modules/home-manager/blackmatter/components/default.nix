@@ -9,10 +9,8 @@ with lib; {
   imports = [
     ./attic-netrc
     ./env
-    ./ghostty
     ./gitconfig
     ./hammerspoon
-    ./mcp
     ./microservices
     ./packages
     ./ssh
