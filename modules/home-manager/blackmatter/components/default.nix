@@ -8,6 +8,7 @@ with lib; {
   # Only inline (small, rarely-changing) components are imported here.
   imports = [
     ./attic-netrc
+    ./env
     ./ghostty
     ./gitconfig
     ./hammerspoon
