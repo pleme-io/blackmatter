@@ -48,11 +48,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1771973638,
-        "narHash": "sha256-Np84WhrAWZA8RZhE8h3Nf8AH+w3376qpgps27areaAo=",
+        "lastModified": 1771973989,
+        "narHash": "sha256-mkyer3YBxig1GpFQcIb8uKMNjfi2QNJkdGq+UWpmNEk=",
         "owner": "pleme-io",
         "repo": "blackmatter-ghostty",
-        "rev": "165a74f385f8187e9ba12d6b30ad79db6fd9a5c6",
+        "rev": "807e09ec1b3b458bb0e652e9af7cf9a80e33443b",
         "type": "github"
       },
       "original": {
