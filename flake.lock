@@ -27,11 +27,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1771973790,
-        "narHash": "sha256-r467Cyk0tLmcEC30J59kxQk++4R1CMSo66Uszx9yXIg=",
+        "lastModified": 1771992537,
+        "narHash": "sha256-+Nm8XJaqTe2GXDcsi0akgDaMMBLpGh4jRjF6JYw9ODY=",
         "owner": "pleme-io",
         "repo": "blackmatter-desktop",
-        "rev": "113c763cec8c47f248834f70a1f300de3bba526a",
+        "rev": "e2035f94ca86115241a28f75c6869f221d41c417",
         "type": "github"
       },
       "original": {
@@ -119,6 +119,26 @@
       "original": {
         "owner": "pleme-io",
         "repo": "blackmatter-nvim",
+        "type": "github"
+      }
+    },
+    "blackmatter-opencode": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1771992156,
+        "narHash": "sha256-gMNIcIGnp7GSQmmV9TP6L6gtrzCcbxhJ9cW4Za6Ka7U=",
+        "owner": "pleme-io",
+        "repo": "blackmatter-opencode",
+        "rev": "1e6ac9da3ec8b05f3a899c3b4408199098179d6e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "pleme-io",
+        "repo": "blackmatter-opencode",
         "type": "github"
       }
     },
@@ -417,6 +437,7 @@
         "blackmatter-ghostty": "blackmatter-ghostty",
         "blackmatter-kubernetes": "blackmatter-kubernetes",
         "blackmatter-nvim": "blackmatter-nvim",
+        "blackmatter-opencode": "blackmatter-opencode",
         "blackmatter-security": "blackmatter-security",
         "blackmatter-services": "blackmatter-services",
         "blackmatter-shell": "blackmatter-shell",

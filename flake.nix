@@ -60,6 +60,10 @@
       url = "github:pleme-io/blackmatter-ghostty";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    blackmatter-opencode = {
+      url = "github:pleme-io/blackmatter-opencode";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, ... } @ inputs: {
@@ -76,6 +80,7 @@
         inputs.blackmatter-ghostty.homeManagerModules.default
         inputs.blackmatter-security.homeManagerModules.default
         inputs.blackmatter-kubernetes.homeManagerModules.default
+        inputs.blackmatter-opencode.homeManagerModules.default
         inputs.blackmatter-services.homeManagerModules.default
       ];
     };

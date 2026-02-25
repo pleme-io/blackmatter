@@ -20,5 +20,8 @@ in {
 
     # Kubernetes tools
     blackmatter.components.kubernetes.enable = mkDefault true;
+
+    # OpenCode AI coding agent
+    blackmatter.components.opencode.enable = mkDefault true;
   };
 }
