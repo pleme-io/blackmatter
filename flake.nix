@@ -2,8 +2,8 @@
   description = "Blackmatter - modular NixOS/Darwin/Home-Manager configuration framework";
 
   inputs = {
-    # Core nixpkgs (pinned to same rev as pleme-io/nix)
-    nixpkgs.url = "github:NixOS/nixpkgs/d6c71932130818840fc8fe9509cf50be8c64634f";
+    # Core nixpkgs (branch: nixos-25.11 stable)
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
 
     # Secrets management (for overlay)
     sops-nix = {
