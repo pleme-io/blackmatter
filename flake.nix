@@ -64,6 +64,10 @@
       url = "github:pleme-io/blackmatter-opencode";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    blackmatter-tend = {
+      url = "github:pleme-io/blackmatter-tend";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, ... } @ inputs: {
@@ -81,6 +85,7 @@
         inputs.blackmatter-security.homeManagerModules.default
         inputs.blackmatter-kubernetes.homeManagerModules.default
         inputs.blackmatter-opencode.homeManagerModules.default
+        inputs.blackmatter-tend.homeManagerModules.default
         inputs.blackmatter-services.homeManagerModules.default
       ];
     };
