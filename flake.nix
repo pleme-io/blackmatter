@@ -80,6 +80,10 @@
       url = "github:pleme-io/blackmatter-macos";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    blackmatter-tailscale = {
+      url = "github:pleme-io/blackmatter-tailscale";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, ... } @ inputs: {
@@ -106,7 +110,12 @@
     };
 
     # Darwin system module (macOS profiles, DNS, nix config, etc.)
-    darwinModules.blackmatter = import ./modules/darwin/blackmatter;
+    darwinModules.blackmatter = { ... }: {
+      imports = [
+        (import ./modules/darwin/blackmatter)
+        inputs.blackmatter-tailscale.darwinModules.default
+      ];
+    };
 
     # NixOS system module (NixOS profiles + NixOS-specific components)
     nixosModules.blackmatter = { ... }: {
@@ -115,6 +124,7 @@
         inputs.blackmatter-security.nixosModules.default
         inputs.blackmatter-services.nixosModules.default
         inputs.blackmatter-kubernetes.nixosModules.k3s
+        inputs.blackmatter-tailscale.nixosModules.default
       ];
     };
 
