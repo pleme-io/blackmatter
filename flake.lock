@@ -164,6 +164,26 @@
         "type": "github"
       }
     },
+    "blackmatter-pleme": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1772412478,
+        "narHash": "sha256-EOuHIV7J2hpt1cvVzVqTGSEfpn5ncdXh9YGahHT8CU0=",
+        "owner": "pleme-io",
+        "repo": "blackmatter-pleme",
+        "rev": "5232bf7af6fdc61de1a7470013f6bbbd165efe94",
+        "type": "github"
+      },
+      "original": {
+        "owner": "pleme-io",
+        "repo": "blackmatter-pleme",
+        "type": "github"
+      }
+    },
     "blackmatter-security": {
       "inputs": {
         "nixpkgs": [
@@ -621,6 +641,7 @@
         "blackmatter-kubernetes": "blackmatter-kubernetes",
         "blackmatter-nvim": "blackmatter-nvim",
         "blackmatter-opencode": "blackmatter-opencode",
+        "blackmatter-pleme": "blackmatter-pleme",
         "blackmatter-security": "blackmatter-security",
         "blackmatter-services": "blackmatter-services",
         "blackmatter-shell": "blackmatter-shell",

@@ -72,6 +72,10 @@
       url = "github:pleme-io/blackmatter-karakuri";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    blackmatter-pleme = {
+      url = "github:pleme-io/blackmatter-pleme";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, ... } @ inputs: {
@@ -91,6 +95,7 @@
         inputs.blackmatter-opencode.homeManagerModules.default
         inputs.blackmatter-tend.homeManagerModules.default
         inputs.blackmatter-karakuri.homeManagerModules.default
+        inputs.blackmatter-pleme.homeManagerModules.default
         inputs.blackmatter-services.homeManagerModules.default
       ];
     };
