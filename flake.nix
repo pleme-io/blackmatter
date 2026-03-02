@@ -76,6 +76,10 @@
       url = "github:pleme-io/blackmatter-pleme";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    blackmatter-macos = {
+      url = "github:pleme-io/blackmatter-macos";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, ... } @ inputs: {
@@ -96,6 +100,7 @@
         inputs.blackmatter-tend.homeManagerModules.default
         inputs.blackmatter-karakuri.homeManagerModules.default
         inputs.blackmatter-pleme.homeManagerModules.default
+        inputs.blackmatter-macos.homeManagerModules.default
         inputs.blackmatter-services.homeManagerModules.default
       ];
     };
