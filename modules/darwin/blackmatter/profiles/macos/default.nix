@@ -17,6 +17,7 @@ in {
     ./vfkit
     ./limits
     ./maintenance
+    ./chrome
   ];
 
   options = {
@@ -51,5 +52,6 @@ in {
     # Limits enabled by default - required for Nix builds that open many files
     blackmatter.profiles.macos.limits.enable = mkDefault true;
     blackmatter.profiles.macos.maintenance.enable = mkDefault cfg.enableAll;
+    blackmatter.profiles.macos.chrome.enable = mkDefault cfg.enableAll;
   };
 }
