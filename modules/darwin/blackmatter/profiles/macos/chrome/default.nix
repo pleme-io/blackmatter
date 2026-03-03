@@ -1,5 +1,5 @@
 # modules/darwin/blackmatter/profiles/macos/chrome/default.nix
-# Declarative Chrome installation and configuration via Homebrew cask
+# Declarative Chrome installation and configuration via nix-darwin
 # and macOS managed preferences (defaults write com.google.Chrome)
 {
   config,
@@ -96,9 +96,8 @@ in {
   };
 
   config = mkIf cfg.enable {
-    # Install Chrome via Homebrew cask
-    homebrew.enable = true;
-    homebrew.casks = ["google-chrome"];
+    # Install Chrome via nix-darwin (no Homebrew dependency)
+    environment.systemPackages = [ pkgs.google-chrome ];
 
     # Chrome preferences + managed policies via defaults write
     system.defaults.CustomUserPreferences."com.google.Chrome" = mkMerge [
