@@ -1,8 +1,12 @@
 # modules/profiles/security-researcher.nix
 #
-# Stub — security researcher profile options.
-# Imported by blizzard/security, provides security.plo.* option declarations.
+# Stub — declares the security.plo.* option tree consumed by blizzard/security
+# and cid-k3s. Accepts any definitions without enforcement — actual tool
+# installation is handled by blackmatter-security when available.
 { lib, ... }: {
-  # Options declared here are consumed by blizzard security profile.
-  # Actual tool installation is handled by blackmatter-security.
+  options.security.plo = lib.mkOption {
+    type = lib.types.attrsOf lib.types.anything;
+    default = {};
+    description = "Security researcher tool configuration (stub — accepts any value).";
+  };
 }
