@@ -1,7 +1,11 @@
-# Fix ghostty terminfo collision with ncurses
+# Fix ghostty terminfo collision with ncurses (Linux only)
 # ghostty provides its own terminfo which conflicts with ncurses
 # Solution: don't install terminfo from ghostty since ncurses provides it
-final: prev: {
+# On Darwin, blackmatter-ghostty provides its own source-built package
+# via overlay — this fix is not needed and nixpkgs ghostty is Linux-only.
+final: prev:
+if prev.stdenv.isDarwin then {}
+else {
   ghostty = (prev.ghostty.override {
     # Use a wrapper that excludes the terminfo output to avoid collision
   }).overrideAttrs (old: {
