@@ -193,12 +193,12 @@ in {
 
       services.xserver.enable = false;
 
-      systemd.extraConfig = ''
-        DefaultLimitNOFILE=1048576
-        DefaultLimitNPROC=infinity
-        DefaultLimitMEMLOCK=infinity
-        DefaultTasksMax=infinity
-      '';
+      systemd.settings.Manager = {
+        DefaultLimitNOFILE = 1048576;
+        DefaultLimitNPROC = "infinity";
+        DefaultLimitMEMLOCK = "infinity";
+        DefaultTasksMax = "infinity";
+      };
 
       services.journald.extraConfig = ''
         SystemMaxUse=500M

@@ -21,12 +21,12 @@ in {
       LimitSTACK = "infinity";
       LimitMEMLOCK = "infinity";
     };
-    systemd.extraConfig = ''
-      DefaultLimitNOFILE=1048576
-      DefaultLimitNPROC=65536
-      DefaultLimitSTACK=infinity
-      DefaultLimitMEMLOCK=infinity
-    '';
+    systemd.settings.Manager = {
+      DefaultLimitNOFILE = 1048576;
+      DefaultLimitNPROC = 65536;
+      DefaultLimitSTACK = "infinity";
+      DefaultLimitMEMLOCK = "infinity";
+    };
     environment.etc."docker/daemon.json".text = ''
       {
         "default-ulimits": {

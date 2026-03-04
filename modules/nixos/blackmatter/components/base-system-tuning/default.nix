@@ -151,10 +151,10 @@ in {
         SystemMaxUse=${cfg.journald.systemMaxUse}
       '';
 
-      systemd.extraConfig = ''
-        DefaultTimeoutStartSec=${cfg.systemd.defaultTimeoutStartSec}
-        DefaultTimeoutStopSec=${cfg.systemd.defaultTimeoutStopSec}
-      '';
+      systemd.settings.Manager = {
+        DefaultTimeoutStartSec = cfg.systemd.defaultTimeoutStartSec;
+        DefaultTimeoutStopSec = cfg.systemd.defaultTimeoutStopSec;
+      };
       systemd.network.wait-online.enable = cfg.systemd.waitOnline;
 
       nix.extraOptions = mkIf (cfg.nix.extraOptions != "") cfg.nix.extraOptions;
