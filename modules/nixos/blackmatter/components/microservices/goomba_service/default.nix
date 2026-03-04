@@ -18,7 +18,7 @@ in
           goomba_service = {
             enable = mkOption {
               type = types.bool;
-              default = true;
+              default = false;
             };
 
             name = mkOption {
