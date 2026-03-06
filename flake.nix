@@ -84,9 +84,33 @@
       url = "github:pleme-io/blackmatter-tailscale";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    devenv = {
+      url = "github:cachix/devenv";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, ... } @ inputs: {
+  outputs = { self, ... } @ inputs:
+  let
+    forAllSystems = inputs.nixpkgs.lib.genAttrs [
+      "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin"
+    ];
+  in {
+    devShells = forAllSystems (system: let
+      pkgs = inputs.nixpkgs.legacyPackages.${system};
+    in {
+      default = inputs.devenv.lib.mkShell {
+        inputs = { nixpkgs = inputs.nixpkgs; devenv = inputs.devenv; };
+        inherit pkgs;
+        modules = [{
+          languages.nix.enable = true;
+          packages = with pkgs; [ nixpkgs-fmt nil ];
+          git-hooks.hooks.nixpkgs-fmt.enable = true;
+        }];
+      };
+    });
+
     # Home-Manager module — imports core blackmatter + all extracted components
     homeManagerModules.blackmatter = { ... }: {
       imports = [
