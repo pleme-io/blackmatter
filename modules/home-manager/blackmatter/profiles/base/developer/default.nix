@@ -29,6 +29,9 @@ in {
     blackmatter.components.claude.mcp.github.enable = true;
     blackmatter.components.claude.mcp.kubernetes.enable = true;
     blackmatter.components.claude.mcp.fluxcd.enable = true;
+    blackmatter.components.claude.mcp.chromeDevtools.enable = true;
+    blackmatter.components.claude.mcp.curupira.enable = true;
+    blackmatter.components.claude.mcp.umbra.enable = true;
 
     # General MCP server packages (installed to PATH)
     blackmatter.components.claude.mcpPackages.enable = true;
