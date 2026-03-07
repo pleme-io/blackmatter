@@ -14,6 +14,11 @@
             type = lib.types.str;
             description = "IPv4 address of the node";
           };
+          tailscaleIpv4 = lib.mkOption {
+            type = lib.types.nullOr lib.types.str;
+            default = null;
+            description = "Tailscale IPv4 address (used by bifrost for split-horizon DNS fallback)";
+          };
           domains = lib.mkOption {
             type = lib.types.listOf lib.types.str;
             default = [];
