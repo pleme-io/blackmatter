@@ -68,8 +68,8 @@
       url = "github:pleme-io/blackmatter-tend";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    blackmatter-karakuri = {
-      url = "github:pleme-io/blackmatter-karakuri";
+    blackmatter-ayatsuri = {
+      url = "github:pleme-io/blackmatter-ayatsuri";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     blackmatter-pleme = {
@@ -126,7 +126,7 @@
         inputs.blackmatter-kubernetes.homeManagerModules.default
         inputs.blackmatter-opencode.homeManagerModules.default
         inputs.blackmatter-tend.homeManagerModules.default
-        inputs.blackmatter-karakuri.homeManagerModules.default
+        inputs.blackmatter-ayatsuri.homeManagerModules.default
         inputs.blackmatter-pleme.homeManagerModules.default
         inputs.blackmatter-macos.homeManagerModules.default
         inputs.blackmatter-services.homeManagerModules.default
