@@ -24,12 +24,12 @@ in {
         };
         bluetooth = mkOption {
           type = types.bool;
-          default = true;
+          default = false;
           description = "Enable Bluetooth support";
         };
         sound = mkOption {
           type = types.bool;
-          default = true;
+          default = false;
           description = "Enable audio support";
         };
         printing = mkOption {
@@ -39,7 +39,7 @@ in {
         };
         docker = mkOption {
           type = types.bool;
-          default = true;
+          default = false;
           description = "Enable Docker support";
         };
       };
@@ -47,8 +47,8 @@ in {
       # Desktop
       desktop = {
         type = mkOption {
-          type = types.enum [ "wayland" "xorg" "both" ];
-          default = "wayland";
+          type = types.enum [ "none" "wayland" "xorg" "both" ];
+          default = "none";
           description = "Desktop server type";
         };
         displayManager = mkOption {
@@ -67,7 +67,7 @@ in {
       development = {
         enable = mkOption {
           type = types.bool;
-          default = true;
+          default = false;
           description = "Enable development tools";
         };
         languages = mkOption {
@@ -102,7 +102,7 @@ in {
       
       desktop = mkOption {
         type = types.listOf types.package;
-        default = with pkgs; [ firefox alacritty ];
+        default = [];
         description = "Desktop packages";
       };
       
