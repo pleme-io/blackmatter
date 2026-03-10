@@ -58,11 +58,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1773108377,
-        "narHash": "sha256-RRi1SLMkUpMa+BSEkIa3GRJroQLWLCG204LVBbgEwyc=",
+        "lastModified": 1773111145,
+        "narHash": "sha256-kXiGc4TAQjIQ08pgWsYiA6ctCcdkHH+RfHrQ7zIUy4M=",
         "owner": "pleme-io",
         "repo": "blackmatter-claude",
-        "rev": "4a77ff86647fd08d63f03e1a8d8342a37406629f",
+        "rev": "bb9dc620123d8c4bed8e326aed0e31f2ea212724",
         "type": "github"
       },
       "original": {
