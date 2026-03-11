@@ -71,11 +71,37 @@ in {
       };
 
       # Targets where blackmatter owns the deep customization.
-      # All other Stylix targets (gtk, bat, k9s, fzf, zsh-syntax-highlighting,
+      # All other Stylix targets (gtk, bat, fzf, zsh-syntax-highlighting,
       # etc.) default to enabled and are auto-themed by Stylix.
       targets.ghostty.enable = false;   # blackmatter owns detailed Nord palette
       targets.neovim.enable = false;    # blackmatter owns nord.nvim + custom highlights
       targets.starship.enable = false;  # blackmatter owns custom snowflake format
+      targets.k9s.enable = false;       # blackmatter-kubernetes owns themed skin
     }; })
+
+    # Wire Stylix base16 colors into the k9s abstract palette.
+    # This lets k9s automatically match any base16 scheme, not just Nord.
+    (mkIf (cfg.enable && config.blackmatter.components.k9s.enable) {
+      blackmatter.components.k9s.colors = let
+        sc = config.lib.stylix.colors.withHashtag;
+      in {
+        bg        = sc.base00;
+        bgLight   = sc.base01;
+        bgLighter = sc.base02;
+        comment   = sc.base03;
+        fgDim     = sc.base04;
+        fg        = sc.base05;
+        fgBright  = sc.base06;
+        teal      = sc.base07;
+        red       = sc.base08;
+        orange    = sc.base09;
+        yellow    = sc.base0A;
+        green     = sc.base0B;
+        cyan      = sc.base0C;
+        blue      = sc.base0D;
+        purple    = sc.base0E;
+        deepBlue  = sc.base0F;
+      };
+    })
   ];
 }
