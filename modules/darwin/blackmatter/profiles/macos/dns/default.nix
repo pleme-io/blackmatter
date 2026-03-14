@@ -112,6 +112,9 @@ in {
               local=/${domain}/
 
             '') cfg.localDomains}
+            # Forward Tailscale MagicDNS queries to Tailscale's resolver
+            server=/ts.net/100.100.100.100
+
             # Upstream DNS servers
             ${concatMapStrings (server: "server=${server}\n") cfg.upstreamServers}
           '';
