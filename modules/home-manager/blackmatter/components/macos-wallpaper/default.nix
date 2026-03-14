@@ -22,6 +22,7 @@ in {
 
     image = mkOption {
       type = types.path;
+      default = ./wallpaper.jpg;
       description = "Path to the wallpaper image (JPEG or PNG). Copied to ~/Pictures/ on activation.";
     };
 
