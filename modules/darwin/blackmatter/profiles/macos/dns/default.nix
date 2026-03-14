@@ -150,11 +150,24 @@ in {
       }
     '';
 
-    # Add a launchd service to ensure DNS works after network changes
+    # Point all network services at dnsmasq on activation.
+    # dnsmasq forwards non-local queries to upstream servers (1.1.1.1, 8.8.8.8),
+    # so internet DNS continues to work. This ensures /etc/resolver/* files
+    # are actually consulted by macOS for local domain resolution.
+    system.activationScripts.postActivation.text = lib.mkAfter ''
+      for svc in "Wi-Fi" "Thunderbolt Bridge"; do
+        /usr/sbin/networksetup -getnetworkserviceenabled "$svc" 2>/dev/null | grep -q Enabled && \
+          /usr/sbin/networksetup -setdnsservers "$svc" ${cfg.bind} 2>/dev/null || true
+      done
+      /usr/bin/dscacheutil -flushcache 2>/dev/null || true
+      /usr/bin/killall -HUP mDNSResponder 2>/dev/null || true
+    '';
+
+    # Flush DNS cache periodically to pick up topology changes
     launchd.daemons.dns-refresh = {
       command = "/usr/bin/dscacheutil -flushcache";
       serviceConfig = {
-        StartInterval = 3600; # Run every hour
+        StartInterval = 3600;
         RunAtLoad = true;
       };
     };
