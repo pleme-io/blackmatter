@@ -11,6 +11,7 @@ with lib; {
     ./env
     ./gitconfig
     ./hammerspoon
+    ./macos-wallpaper
     ./packages
     ./ssh
     ./ssh-aliases
