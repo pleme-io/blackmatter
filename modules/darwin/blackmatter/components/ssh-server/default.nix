@@ -1,0 +1,88 @@
+# blackmatter.components.sshServer — macOS SSH server (Remote Login)
+#
+# Enables the macOS built-in SSH server via launchd and manages
+# authorized_keys for key-based access. Works with the system sshd
+# (not a separate openssh build).
+#
+# Usage:
+#   blackmatter.components.sshServer = {
+#     enable = true;
+#     authorizedKeys = [ "ssh-ed25519 AAAA... user@machine" ];
+#   };
+{ config, lib, pkgs, ... }:
+
+let
+  cfg = config.blackmatter.components.sshServer;
+
+  # Build authorized_keys content from the key list
+  authorizedKeysContent = lib.concatStringsSep "\n" cfg.authorizedKeys;
+in
+{
+  options.blackmatter.components.sshServer = {
+    enable = lib.mkEnableOption "SSH server (Remote Login) for incoming connections";
+
+    authorizedKeys = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [];
+      description = "SSH public keys authorized to connect to this machine";
+      example = [ "ssh-ed25519 AAAAC3... user@peer" ];
+    };
+
+    permitPasswordAuth = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = "Allow password authentication (default: key-only)";
+    };
+
+    users = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [];
+      description = ''
+        Users allowed to receive SSH connections. Each user gets the
+        authorizedKeys installed to their ~/.ssh/authorized_keys.
+        If empty, keys are installed for the primary user only.
+      '';
+    };
+  };
+
+  config = lib.mkIf cfg.enable {
+    # Enable macOS Remote Login (sshd) via system preference.
+    # This is the nix-darwin equivalent of:
+    #   sudo systemsetup -setremotelogin on
+    # which loads /System/Library/LaunchDaemons/ssh.plist
+    system.defaults.universalaccess = {};
+
+    # Use a launchd agent to ensure Remote Login stays enabled
+    # and to install authorized_keys on activation.
+    system.activationScripts.postActivation.text = let
+      sshdConfig = if cfg.permitPasswordAuth then "" else ''
+        # Ensure key-only auth
+        if ! grep -q "^PasswordAuthentication no" /etc/ssh/sshd_config 2>/dev/null; then
+          echo "PasswordAuthentication no" | sudo tee -a /etc/ssh/sshd_config.d/100-blackmatter.conf >/dev/null 2>&1 || true
+        fi
+      '';
+      installKeys = user: ''
+        # Install authorized_keys for ${user}
+        _bm_ssh_home=$(eval echo "~${user}")
+        if [ -d "$_bm_ssh_home" ]; then
+          mkdir -p "$_bm_ssh_home/.ssh"
+          chmod 700 "$_bm_ssh_home/.ssh"
+          cat > "$_bm_ssh_home/.ssh/authorized_keys" <<'BMKEYS'
+${authorizedKeysContent}
+BMKEYS
+          chmod 600 "$_bm_ssh_home/.ssh/authorized_keys"
+          chown -R ${user} "$_bm_ssh_home/.ssh" 2>/dev/null || true
+        fi
+      '';
+      userList = if cfg.users == [] then [ config.users.primaryUser.name or "drzzln" ] else cfg.users;
+    in ''
+      # blackmatter.components.sshServer — enable Remote Login
+      echo "enabling SSH server (Remote Login)..."
+      /usr/sbin/systemsetup -setremotelogin on 2>/dev/null || true
+
+      ${sshdConfig}
+
+      ${lib.concatMapStringsSep "\n" installKeys userList}
+    '';
+  };
+}
