@@ -162,6 +162,20 @@ in {
                 default = current
             '';
           };
+
+          hooks = {
+            enable = mkOption {
+              type = types.bool;
+              default = false;
+              description = "Enable global git hooks via core.hooksPath";
+            };
+
+            stripCoAuthored = mkOption {
+              type = types.bool;
+              default = false;
+              description = "Strip Co-Authored-By trailer lines from commit messages";
+            };
+          };
         };
       };
     };
@@ -193,6 +207,7 @@ in {
           pager = ${cfg.core.pager}
           editor = ${cfg.core.editor}
           autocrlf = input
+          ${optionalString cfg.hooks.enable "hooksPath = ~/.config/git/hooks"}
 
         [fetch]
           prune = true
@@ -339,6 +354,22 @@ in {
       ++ optional cfg.rustTools.lazygit lazygit  # Cross-platform TUI
       # gitui is Linux-only due to compilation issues on macOS
       ++ optionals (cfg.rustTools.gitui && pkgs.stdenv.isLinux) [ gitui ];
+    })
+
+    # Global git hooks
+    (mkIf cfg.hooks.enable {
+      home.file.".config/git/hooks/commit-msg" = {
+        executable = true;
+        text = ''
+          #!/usr/bin/env bash
+          # Global commit-msg hook deployed by blackmatter.components.gitconfig
+          ${optionalString cfg.hooks.stripCoAuthored ''
+          # Strip Co-Authored-By trailer lines
+          sed -i.bak '/^Co-Authored-By:/d' "$1"
+          rm -f "$1.bak"
+          ''}
+        '';
+      };
     })
   ]);
 }
