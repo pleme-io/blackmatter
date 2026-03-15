@@ -59,7 +59,6 @@ in
       name = "ssh/nix_authorized_keys.d/${user}";
       value = {
         text = lib.concatStringsSep "\n" cfg.authorizedKeys;
-        mode = "0444";
       };
     }) cfg.users);
 
