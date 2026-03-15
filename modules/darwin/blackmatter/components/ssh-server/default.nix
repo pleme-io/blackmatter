@@ -62,12 +62,27 @@ in
       };
     }) cfg.users);
 
-    # ── Enable sshd via launchd ──────────────────────────────────
-    # Load the system SSH daemon on activation.
-    system.activationScripts.postActivation.text = ''
+    # ── Enable sshd + set login shells on activation ─────────────
+    system.activationScripts.postActivation.text = let
+      setShell = user: ''
+        # Set login shell for ${user}
+        _bm_want="/run/current-system/sw/bin/blzsh"
+        if [ -x "$_bm_want" ]; then
+          _bm_cur=$(dscl . -read /Users/${user} UserShell 2>/dev/null | awk '{print $2}')
+          if [ "$_bm_cur" != "$_bm_want" ]; then
+            echo "setting login shell for ${user} → blzsh"
+            dscl . -change /Users/${user} UserShell "$_bm_cur" "$_bm_want" 2>/dev/null || true
+          fi
+        fi
+      '';
+    in ''
+      # Enable sshd
       if ! /bin/launchctl print system/com.openssh.sshd &>/dev/null; then
         /bin/launchctl load -w /System/Library/LaunchDaemons/ssh.plist 2>/dev/null || true
       fi
+
+      # Set login shells to blzsh for SSH users
+      ${lib.concatMapStringsSep "\n" setShell cfg.users}
     '';
   };
 }
