@@ -49,11 +49,16 @@ in
     # Enable macOS Remote Login (sshd) and install authorized_keys
     # on activation. Uses systemsetup to enable the system sshd.
     system.activationScripts.postActivation.text = let
-      sshdConfig = if cfg.permitPasswordAuth then "" else ''
-        # Ensure key-only auth
-        if ! grep -q "^PasswordAuthentication no" /etc/ssh/sshd_config 2>/dev/null; then
-          echo "PasswordAuthentication no" | sudo tee -a /etc/ssh/sshd_config.d/100-blackmatter.conf >/dev/null 2>&1 || true
-        fi
+      # Build the sshd config file content declaratively — overwrite on each rebuild
+      sshdConfigContent = lib.concatStringsSep "\n" (
+        (lib.optional (!cfg.permitPasswordAuth) "PasswordAuthentication no")
+        ++ [ "AcceptEnv TERM TERMINFO TERMINFO_DIRS COLORTERM" ]
+      );
+      sshdConfig = ''
+        # Write blackmatter sshd config (idempotent — full overwrite)
+        cat > /etc/ssh/sshd_config.d/100-blackmatter.conf <<'BMSSHD'
+${sshdConfigContent}
+BMSSHD
       '';
       installKeys = user: ''
         # Install authorized_keys for ${user}
@@ -82,14 +87,6 @@ BMKEYS
       fi
 
       ${sshdConfig}
-
-      # Ensure sshd accepts TERM and TERMINFO from clients.
-      # macOS default only has "AcceptEnv LANG LC_*" — Ghostty needs
-      # TERM=xterm-ghostty to propagate for proper terminal rendering.
-      _bm_sshd_conf="/etc/ssh/sshd_config.d/100-blackmatter.conf"
-      if ! grep -q "AcceptEnv.*TERM" "$_bm_sshd_conf" 2>/dev/null; then
-        echo "AcceptEnv TERM TERMINFO TERMINFO_DIRS COLORTERM" >> "$_bm_sshd_conf"
-      fi
 
       ${lib.concatMapStringsSep "\n" installKeys userList}
     '';
