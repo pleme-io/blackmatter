@@ -83,6 +83,14 @@ BMKEYS
 
       ${sshdConfig}
 
+      # Ensure sshd accepts TERM and TERMINFO from clients.
+      # macOS default only has "AcceptEnv LANG LC_*" — Ghostty needs
+      # TERM=xterm-ghostty to propagate for proper terminal rendering.
+      _bm_sshd_conf="/etc/ssh/sshd_config.d/100-blackmatter.conf"
+      if ! grep -q "AcceptEnv.*TERM" "$_bm_sshd_conf" 2>/dev/null; then
+        echo "AcceptEnv TERM TERMINFO TERMINFO_DIRS COLORTERM" >> "$_bm_sshd_conf"
+      fi
+
       ${lib.concatMapStringsSep "\n" installKeys userList}
     '';
   };

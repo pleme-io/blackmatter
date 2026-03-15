@@ -190,6 +190,8 @@ in {
                 TCPKeepAlive = "yes";
                 HashKnownHosts = "yes";
                 IdentitiesOnly = "yes";
+                # Propagate terminal type for Ghostty/modern terminals
+                SendEnv = "TERM COLORTERM TERM_PROGRAM";
               }
               (mkIf cfg.disableHostKeyChecking {
                 StrictHostKeyChecking = "no";
