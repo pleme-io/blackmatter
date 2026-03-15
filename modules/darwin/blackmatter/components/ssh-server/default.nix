@@ -44,22 +44,18 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    # ── sshd configuration (declarative via environment.etc) ─────
-    environment.etc."ssh/sshd_config.d/100-blackmatter.conf" = {
-      text = lib.concatStringsSep "\n" (
-        (lib.optional (!cfg.permitPasswordAuth) "PasswordAuthentication no")
-        ++ (lib.optional (!cfg.permitPasswordAuth) "KbdInteractiveAuthentication no")
-        ++ [ "PubkeyAuthentication yes" ]
-        ++ (lib.optional (cfg.acceptEnv != [])
-          "AcceptEnv ${lib.concatStringsSep " " cfg.acceptEnv}")
-      );
-    };
-
-    # ── Authorized keys (nix-darwin native path) ─────────────────
-    # nix-darwin's 101-authorized-keys.conf sets up:
-    #   AuthorizedKeysCommand /bin/cat /etc/ssh/nix_authorized_keys.d/%u
-    # We just write the keys files declaratively.
-    environment.etc = lib.listToAttrs (map (user: {
+    # ── sshd config + authorized keys (single environment.etc block) ─
+    environment.etc = {
+      "ssh/sshd_config.d/100-blackmatter.conf" = {
+        text = lib.concatStringsSep "\n" (
+          (lib.optional (!cfg.permitPasswordAuth) "PasswordAuthentication no")
+          ++ (lib.optional (!cfg.permitPasswordAuth) "KbdInteractiveAuthentication no")
+          ++ [ "PubkeyAuthentication yes" ]
+          ++ (lib.optional (cfg.acceptEnv != [])
+            "AcceptEnv ${lib.concatStringsSep " " cfg.acceptEnv}")
+        );
+      };
+    } // lib.listToAttrs (map (user: {
       name = "ssh/nix_authorized_keys.d/${user}";
       value = {
         text = lib.concatStringsSep "\n" cfg.authorizedKeys;
