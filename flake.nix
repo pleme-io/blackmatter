@@ -85,6 +85,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Darwin system activation tool (sshd, login shells, dscl)
+    bm-darwin-setup = {
+      url = "github:pleme-io/bm-darwin-setup";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     devenv = {
       url = "github:cachix/devenv";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -160,6 +166,7 @@
         inputs.sops-nix.overlays.default
         inputs.claude-code.overlays.default
         inputs.blackmatter-ghostty.overlays.default
+        inputs.bm-darwin-setup.overlays.default
         zoektMcpOverlay
         codesearchOverlay
       ] ++ import ./overlays;

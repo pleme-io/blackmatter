@@ -62,26 +62,14 @@ in
       };
     }) cfg.users);
 
-    # ── Enable sshd + set login shells on activation ─────────────
+    # ── Enable sshd + set login shells via bm-darwin-setup ──────
     system.activationScripts.postActivation.text = let
+      bin = "${pkgs.bm-darwin-setup}/bin/bm-darwin-setup";
       setShell = user: ''
-        # Set login shell for ${user} (skip if user doesn't exist in macOS directory)
-        _bm_want="/run/current-system/sw/bin/blzsh"
-        if [ -x "$_bm_want" ] && dscl . -read /Users/${user} UserShell &>/dev/null; then
-          _bm_cur=$(dscl . -read /Users/${user} UserShell | awk '{print $2}')
-          if [ "$_bm_cur" != "$_bm_want" ]; then
-            echo "setting login shell for ${user} → blzsh"
-            dscl . -change /Users/${user} UserShell "$_bm_cur" "$_bm_want" 2>/dev/null || true
-          fi
-        fi
+        ${bin} shell set ${user} /run/current-system/sw/bin/blzsh
       '';
     in ''
-      # Enable sshd
-      if ! /bin/launchctl print system/com.openssh.sshd &>/dev/null; then
-        /bin/launchctl load -w /System/Library/LaunchDaemons/ssh.plist 2>/dev/null || true
-      fi
-
-      # Set login shells to blzsh for SSH users
+      ${bin} ssh enable
       ${lib.concatMapStringsSep "\n" setShell cfg.users}
     '';
   };
