@@ -21,17 +21,10 @@ in {
     # Claude Code configuration (LSP + MCP servers)
     blackmatter.components.claude.enable = true;
 
-    # MCP servers for AI-assisted development
-    # Zoekt/codesearch daemons are managed by their own repos (zoekt-mcp, codesearch)
-    # and configured per-machine in the nix repo via services.zoekt.daemon / services.codesearch.daemon
+    # Service-level MCP servers (zoekt/codesearch/amimori daemons)
+    # Other MCP servers (github, k8s, fluxcd, etc.) are in blackmatter-anvil
     blackmatter.components.claude.mcp.zoektMcp.enable = true;
     blackmatter.components.claude.mcp.codesearch.enable = true;
-    blackmatter.components.claude.mcp.github.enable = true;
-    blackmatter.components.claude.mcp.kubernetes.enable = true;
-    blackmatter.components.claude.mcp.fluxcd.enable = true;
-    blackmatter.components.claude.mcp.chromeDevtools.enable = true;
-    blackmatter.components.claude.mcp.curupira.enable = true;
-    blackmatter.components.claude.mcp.umbra.enable = true;
     blackmatter.components.claude.mcp.amimori.enable = true;
 
     # General MCP server packages (installed to PATH)
