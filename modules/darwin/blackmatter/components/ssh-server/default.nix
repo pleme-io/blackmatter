@@ -72,7 +72,14 @@ BMKEYS
     in ''
       # blackmatter.components.sshServer — enable Remote Login
       echo "enabling SSH server (Remote Login)..."
-      /usr/sbin/systemsetup -setremotelogin on 2>/dev/null || true
+
+      # Modern macOS (13+): use launchctl to load the system sshd.
+      # Falls back to systemsetup for older versions.
+      if ! /bin/launchctl print system/com.openssh.sshd &>/dev/null; then
+        /bin/launchctl load -w /System/Library/LaunchDaemons/ssh.plist 2>/dev/null \
+          || /usr/sbin/systemsetup -setremotelogin on 2>/dev/null \
+          || echo "warning: could not enable Remote Login"
+      fi
 
       ${sshdConfig}
 
