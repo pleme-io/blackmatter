@@ -46,14 +46,8 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    # Enable macOS Remote Login (sshd) via system preference.
-    # This is the nix-darwin equivalent of:
-    #   sudo systemsetup -setremotelogin on
-    # which loads /System/Library/LaunchDaemons/ssh.plist
-    system.defaults.universalaccess = {};
-
-    # Use a launchd agent to ensure Remote Login stays enabled
-    # and to install authorized_keys on activation.
+    # Enable macOS Remote Login (sshd) and install authorized_keys
+    # on activation. Uses systemsetup to enable the system sshd.
     system.activationScripts.postActivation.text = let
       sshdConfig = if cfg.permitPasswordAuth then "" else ''
         # Ensure key-only auth
@@ -74,7 +68,7 @@ BMKEYS
           chown -R ${user} "$_bm_ssh_home/.ssh" 2>/dev/null || true
         fi
       '';
-      userList = if cfg.users == [] then [ config.users.primaryUser.name or "drzzln" ] else cfg.users;
+      userList = cfg.users;
     in ''
       # blackmatter.components.sshServer — enable Remote Login
       echo "enabling SSH server (Remote Login)..."
