@@ -3,5 +3,6 @@
   imports = [
     ../../shared/network-topology
     ./profiles/macos
+    ./components
   ];
 }

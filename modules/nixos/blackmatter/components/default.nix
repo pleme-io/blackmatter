@@ -18,5 +18,6 @@
     ./system-locale
     ./sops-secrets
     ./base-system-tuning
+    ./ssh-server
   ];
 }
