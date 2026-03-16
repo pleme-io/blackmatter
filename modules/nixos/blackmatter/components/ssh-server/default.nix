@@ -91,11 +91,10 @@ in
       };
     };
 
-    # Root authorized keys
-    users.users.root.openssh.authorizedKeys.keys = cfg.authorizedKeys;
-
-    # Per-user authorized keys
-    users.users = lib.mapAttrs (user: keys: {
+    # Root + per-user authorized keys (merged into single users.users definition)
+    users.users = {
+      root.openssh.authorizedKeys.keys = cfg.authorizedKeys;
+    } // lib.mapAttrs (_user: keys: {
       openssh.authorizedKeys.keys = keys;
     }) cfg.userKeys;
 
