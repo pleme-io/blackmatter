@@ -1,5 +1,26 @@
 {
   "nodes": {
+    "aws-cli": {
+      "inputs": {
+        "flake-utils": "flake-utils",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1773863189,
+        "narHash": "sha256-Dt3JCxZQj9YEyxj4rEu6sfxWR34KcVZeg4DRcPLbKkE=",
+        "owner": "pleme-io",
+        "repo": "aws-cli",
+        "rev": "758f278d7d2210025a0e6e8a2ae088a49b04dc35",
+        "type": "github"
+      },
+      "original": {
+        "owner": "pleme-io",
+        "repo": "aws-cli",
+        "type": "github"
+      }
+    },
     "ayatsuri": {
       "inputs": {
         "devenv": "devenv",
@@ -457,7 +478,7 @@
         "crate2nix": "crate2nix_13",
         "devenv": "devenv_20",
         "fenix": "fenix_10",
-        "flake-utils": "flake-utils_5",
+        "flake-utils": "flake-utils_6",
         "nixpkgs": [
           "blackmatter-shell",
           "nixpkgs"
@@ -481,7 +502,7 @@
     "bm-darwin-setup": {
       "inputs": {
         "crate2nix": "crate2nix_18",
-        "flake-utils": "flake-utils_7",
+        "flake-utils": "flake-utils_8",
         "nixpkgs": [
           "nixpkgs"
         ],
@@ -2080,7 +2101,7 @@
     },
     "claude-code": {
       "inputs": {
-        "flake-utils": "flake-utils",
+        "flake-utils": "flake-utils_2",
         "nixpkgs": [
           "blackmatter-claude",
           "nixpkgs"
@@ -2102,7 +2123,7 @@
     },
     "claude-code_2": {
       "inputs": {
-        "flake-utils": "flake-utils_8",
+        "flake-utils": "flake-utils_9",
         "nixpkgs": [
           "nixpkgs"
         ]
@@ -2864,7 +2885,7 @@
       "inputs": {
         "crate2nix": "crate2nix_2",
         "devenv": "devenv_7",
-        "flake-utils": "flake-utils_2",
+        "flake-utils": "flake-utils_3",
         "nixpkgs": [
           "blackmatter-ghostty",
           "nixpkgs"
@@ -6668,6 +6689,24 @@
         "type": "github"
       }
     },
+    "flake-utils_10": {
+      "inputs": {
+        "systems": "systems_10"
+      },
+      "locked": {
+        "lastModified": 1731533236,
+        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
     "flake-utils_2": {
       "inputs": {
         "systems": "systems_2"
@@ -6794,6 +6833,24 @@
         "type": "github"
       }
     },
+    "flake-utils_9": {
+      "inputs": {
+        "systems": "systems_9"
+      },
+      "locked": {
+        "lastModified": 1731533236,
+        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
     "forge": {
       "inputs": {
         "crate2nix": "crate2nix_3",
@@ -6820,10 +6877,31 @@
         "type": "github"
       }
     },
+    "gcloud": {
+      "inputs": {
+        "flake-utils": "flake-utils_10",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1773863192,
+        "narHash": "sha256-OpRfDRVOFWynvm24GuK5NKQfK+oInT+P6Be3VJJX0Ao=",
+        "owner": "pleme-io",
+        "repo": "gcloud",
+        "rev": "864ef4d4fc3815d061ab29fa8ecb6231d06342fc",
+        "type": "github"
+      },
+      "original": {
+        "owner": "pleme-io",
+        "repo": "gcloud",
+        "type": "github"
+      }
+    },
     "ghostty": {
       "inputs": {
         "flake-compat": "flake-compat_14",
-        "flake-utils": "flake-utils_3",
+        "flake-utils": "flake-utils_4",
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs_8",
         "zig": "zig",
@@ -9825,7 +9903,7 @@
         "crate2nix": "crate2nix_6",
         "devenv": "devenv_12",
         "fenix": "fenix_6",
-        "flake-utils": "flake-utils_4",
+        "flake-utils": "flake-utils_5",
         "nixpkgs": [
           "blackmatter-kubernetes",
           "nixpkgs"
@@ -13319,6 +13397,7 @@
     },
     "root": {
       "inputs": {
+        "aws-cli": "aws-cli",
         "blackmatter-ayatsuri": "blackmatter-ayatsuri",
         "blackmatter-claude": "blackmatter-claude",
         "blackmatter-desktop": "blackmatter-desktop",
@@ -13337,6 +13416,7 @@
         "claude-code": "claude-code_2",
         "devenv": "devenv_25",
         "fenix": "fenix_14",
+        "gcloud": "gcloud",
         "nixpkgs": "nixpkgs_37",
         "sops-nix": "sops-nix"
       }
@@ -13672,7 +13752,7 @@
         "crate2nix": "crate2nix_15",
         "devenv": "devenv_22",
         "fenix": "fenix_11",
-        "flake-utils": "flake-utils_6",
+        "flake-utils": "flake-utils_7",
         "nixpkgs": [
           "blackmatter-shell",
           "nixpkgs"
@@ -13987,6 +14067,21 @@
         "type": "github"
       }
     },
+    "systems_10": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
     "systems_2": {
       "locked": {
         "lastModified": 1681028828,
@@ -14078,6 +14173,21 @@
       }
     },
     "systems_8": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
+    "systems_9": {
       "locked": {
         "lastModified": 1681028828,
         "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",

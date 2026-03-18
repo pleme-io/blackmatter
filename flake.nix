@@ -23,6 +23,16 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Cloud CLI overlays (tests disabled for fast builds)
+    aws-cli = {
+      url = "github:pleme-io/aws-cli";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    gcloud = {
+      url = "github:pleme-io/gcloud";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # ================================================================
     # Extracted component repos
     # Each exposes homeManagerModules.default
@@ -165,6 +175,8 @@
       myOverlays = [
         inputs.sops-nix.overlays.default
         inputs.claude-code.overlays.default
+        inputs.aws-cli.overlays.default
+        inputs.gcloud.overlays.default
         inputs.blackmatter-ghostty.overlays.default
         inputs.bm-darwin-setup.overlays.default
         zoektMcpOverlay

@@ -98,7 +98,7 @@ final: prev: {
   cloud-cli = prev.buildEnv {
     name = "cloud-cli";
     paths = with prev; [
-      # awscli2 # Disabled: slow test suite hangs builds
+      awscli2
       azure-cli
       google-cloud-sdk
     ] ++ prev.lib.optionals (prev ? doctl) [

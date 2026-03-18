@@ -204,7 +204,7 @@ in {
         vault
         consul
         nomad
-        # awscli2 # Disabled: slow test suite hangs builds
+        awscli2
         google-cloud-sdk
         azure-cli
         prometheus
