@@ -150,7 +150,6 @@
         inputs.blackmatter-pleme.homeManagerModules.default
         inputs.blackmatter-macos.homeManagerModules.default
         inputs.blackmatter-services.homeManagerModules.default
-        inputs.blackmatter-anvil.homeManagerModules.default
       ];
     };
 
