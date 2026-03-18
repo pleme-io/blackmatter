@@ -21,11 +21,8 @@ in {
     # Claude Code configuration (LSP + MCP servers)
     blackmatter.components.claude.enable = true;
 
-    # Service-level MCP servers (zoekt/codesearch/amimori daemons)
-    # Other MCP servers (github, k8s, fluxcd, etc.) are in blackmatter-anvil
-    blackmatter.components.claude.mcp.zoektMcp.enable = true;
-    blackmatter.components.claude.mcp.codesearch.enable = true;
-    blackmatter.components.claude.mcp.amimori.enable = true;
+    # MCP servers are self-registered with anvil via mkAnvilRegistration
+    # in their respective service modules. Enable them in mcp-services.nix.
 
     # General MCP server packages (installed to PATH)
     blackmatter.components.claude.mcpPackages.enable = true;

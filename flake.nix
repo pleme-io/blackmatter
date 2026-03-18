@@ -94,6 +94,10 @@
       url = "github:pleme-io/blackmatter-tailscale";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    blackmatter-anvil = {
+      url = "github:pleme-io/blackmatter-anvil";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # Darwin system activation tool (sshd, login shells, dscl)
     bm-darwin-setup = {
@@ -146,6 +150,7 @@
         inputs.blackmatter-pleme.homeManagerModules.default
         inputs.blackmatter-macos.homeManagerModules.default
         inputs.blackmatter-services.homeManagerModules.default
+        inputs.blackmatter-anvil.homeManagerModules.default
       ];
     };
 
