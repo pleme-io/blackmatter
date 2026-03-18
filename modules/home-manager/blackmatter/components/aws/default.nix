@@ -25,7 +25,8 @@ with lib; let
     + mkIniLine "sso_account_id" p.accountId
     + mkIniLine "sso_role_name" p.roleName
     + mkIniLine "role_arn" p.roleArn
-    + mkIniLine "source_profile" p.sourceProfile;
+    + mkIniLine "source_profile" p.sourceProfile
+    + concatStringsSep "" (mapAttrsToList (k: v: mkIniLine k v) p.extraConfig);
 
   mkSsoSession = name: s:
     "[sso-session ${name}]\n"
@@ -95,6 +96,13 @@ with lib; let
         type = types.nullOr types.str;
         default = null;
         description = "Source profile for assumed-role chain.";
+      };
+
+      extraConfig = mkOption {
+        type = types.attrsOf types.str;
+        default = {};
+        description = "Additional key=value pairs appended to this profile section.";
+        example = { credential_process = "/usr/bin/my-cred-helper"; mfa_serial = "arn:aws:iam::123:mfa/user"; };
       };
     };
   };
