@@ -103,6 +103,22 @@
       url = "github:pleme-io/blackmatter-anvil";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    blackmatter-home = {
+      url = "github:pleme-io/blackmatter-home";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # Flake placement tool (used by home.activation to write flake.nix files)
+    nix-place = {
+      url = "github:pleme-io/nix-place";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # Substrate (for flake-fragment-helpers option types + activation generator)
+    substrate = {
+      url = "github:pleme-io/substrate";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # Darwin system activation tool (sshd, login shells, dscl)
     bm-darwin-setup = {
@@ -137,10 +153,16 @@
     });
 
     # Home-Manager module — imports core blackmatter + all extracted components
-    homeManagerModules.blackmatter = { ... }: {
+    homeManagerModules.blackmatter = { ... }: let
+      fragmentHelpers = import "${inputs.substrate}/lib/hm/flake-fragment-helpers.nix" {
+        lib = inputs.nixpkgs.lib;
+      };
+    in {
       imports = [
         # Core: profiles, themes, inline components (git, ssh, etc.)
         ./modules/home-manager/blackmatter
+        # Flake fragment option + activation (uses pkgs.nix-place from overlay)
+        (fragmentHelpers.mkFlakeFragmentModule {})
         # Extracted component repos
         inputs.blackmatter-nvim.homeManagerModules.default
         inputs.blackmatter-shell.homeManagerModules.default
@@ -156,6 +178,7 @@
         inputs.blackmatter-android.homeManagerModules.default
         inputs.blackmatter-macos.homeManagerModules.default
         inputs.blackmatter-services.homeManagerModules.default
+        inputs.blackmatter-home.homeManagerModules.default
       ];
     };
 
@@ -183,6 +206,7 @@
     overlays = let
       zoektMcpOverlay = import ./overlays/zoekt-mcp.nix {inherit inputs;};
       codesearchOverlay = import ./overlays/codesearch.nix {inherit inputs;};
+      nixPlaceOverlay = import ./overlays/nix-place.nix {inherit inputs;};
       myOverlays = [
         inputs.sops-nix.overlays.default
         inputs.claude-code.overlays.default
@@ -192,6 +216,7 @@
         inputs.bm-darwin-setup.overlays.default
         zoektMcpOverlay
         codesearchOverlay
+        nixPlaceOverlay
       ] ++ import ./overlays;
     in {
       combined = final: prev:
