@@ -219,11 +219,11 @@
         "substrate": "substrate_5"
       },
       "locked": {
-        "lastModified": 1774202519,
-        "narHash": "sha256-U1R8fGlv3ietzBYwE19dOFj8OXAmY4boONmpYKeR55Q=",
+        "lastModified": 1774203228,
+        "narHash": "sha256-KvQWR+QITDq1vJ5HoIYNOI0d7KTZjx5M9nnRwFE3Sl4=",
         "owner": "pleme-io",
         "repo": "blackmatter-home",
-        "rev": "eb3d68cdfc220c66a084b17c3bb3dce24b3a193f",
+        "rev": "c9c3600e13fc5506a02f92846e63cd6e6dc013c8",
         "type": "github"
       },
       "original": {
@@ -361,11 +361,11 @@
         "substrate": "substrate_9"
       },
       "locked": {
-        "lastModified": 1774202521,
-        "narHash": "sha256-5IkOSZw5+gew0mDQt4NJAA92CQxcwDEO9eTy4y6lnzU=",
+        "lastModified": 1774203231,
+        "narHash": "sha256-MXnppBuR5hFH4j5MotvhVGnjA5hjmO2ttA3WQpj7P74=",
         "owner": "pleme-io",
         "repo": "blackmatter-pleme",
-        "rev": "c5560882411a4c8dc004f4764644d889ff5c5cd6",
+        "rev": "12f43823050c4ac17042a2e681d2749b96201589",
         "type": "github"
       },
       "original": {
@@ -9150,11 +9150,11 @@
         "substrate": "substrate_13"
       },
       "locked": {
-        "lastModified": 1774202517,
-        "narHash": "sha256-WJGUKQs3jNFLZ5s36MxMhNIelEIYdJk6ycB4trs2k4c=",
+        "lastModified": 1774203227,
+        "narHash": "sha256-+R0iTeiPMUkomc7C4ey30U9TF9R7qKzGpnJrzn6IWRQ=",
         "owner": "pleme-io",
         "repo": "nix-place",
-        "rev": "779adba201847286b9f09d9ede75c0eb7ea4ed96",
+        "rev": "c33dc2a96db3bb9be2d559d5e618ecbf44f3de79",
         "type": "github"
       },
       "original": {
@@ -12766,11 +12766,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1774202488,
-        "narHash": "sha256-RJpby0mndY0izoezqXxKNOxzksiFRpIJj/F5CkKTvL8=",
+        "lastModified": 1774203188,
+        "narHash": "sha256-UYQF1zKjBw2c/8lUfbhYD+JBzoE8EHuxmfaJnFwnhi4=",
         "owner": "pleme-io",
         "repo": "substrate",
-        "rev": "c3192c05cd441c93fffa16fc4f30e98fb5d8bc36",
+        "rev": "6059bedcec2bb8a67a562421c162d9e73faed839",
         "type": "github"
       },
       "original": {
@@ -12789,11 +12789,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1774202488,
-        "narHash": "sha256-RJpby0mndY0izoezqXxKNOxzksiFRpIJj/F5CkKTvL8=",
+        "lastModified": 1774203188,
+        "narHash": "sha256-UYQF1zKjBw2c/8lUfbhYD+JBzoE8EHuxmfaJnFwnhi4=",
         "owner": "pleme-io",
         "repo": "substrate",
-        "rev": "c3192c05cd441c93fffa16fc4f30e98fb5d8bc36",
+        "rev": "6059bedcec2bb8a67a562421c162d9e73faed839",
         "type": "github"
       },
       "original": {
@@ -12885,11 +12885,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1774202488,
-        "narHash": "sha256-RJpby0mndY0izoezqXxKNOxzksiFRpIJj/F5CkKTvL8=",
+        "lastModified": 1774203188,
+        "narHash": "sha256-UYQF1zKjBw2c/8lUfbhYD+JBzoE8EHuxmfaJnFwnhi4=",
         "owner": "pleme-io",
         "repo": "substrate",
-        "rev": "c3192c05cd441c93fffa16fc4f30e98fb5d8bc36",
+        "rev": "6059bedcec2bb8a67a562421c162d9e73faed839",
         "type": "github"
       },
       "original": {
@@ -12965,11 +12965,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1774202488,
-        "narHash": "sha256-RJpby0mndY0izoezqXxKNOxzksiFRpIJj/F5CkKTvL8=",
+        "lastModified": 1774203188,
+        "narHash": "sha256-UYQF1zKjBw2c/8lUfbhYD+JBzoE8EHuxmfaJnFwnhi4=",
         "owner": "pleme-io",
         "repo": "substrate",
-        "rev": "c3192c05cd441c93fffa16fc4f30e98fb5d8bc36",
+        "rev": "6059bedcec2bb8a67a562421c162d9e73faed839",
         "type": "github"
       },
       "original": {
@@ -12989,11 +12989,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1774202488,
-        "narHash": "sha256-RJpby0mndY0izoezqXxKNOxzksiFRpIJj/F5CkKTvL8=",
+        "lastModified": 1774203188,
+        "narHash": "sha256-UYQF1zKjBw2c/8lUfbhYD+JBzoE8EHuxmfaJnFwnhi4=",
         "owner": "pleme-io",
         "repo": "substrate",
-        "rev": "c3192c05cd441c93fffa16fc4f30e98fb5d8bc36",
+        "rev": "6059bedcec2bb8a67a562421c162d9e73faed839",
         "type": "github"
       },
       "original": {
