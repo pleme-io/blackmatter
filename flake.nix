@@ -86,6 +86,11 @@
       url = "github:pleme-io/blackmatter-pleme";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    blackmatter-android = {
+      url = "github:pleme-io/blackmatter-android";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.devenv.follows = "devenv";
+    };
     blackmatter-macos = {
       url = "github:pleme-io/blackmatter-macos";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -148,6 +153,7 @@
         inputs.blackmatter-tend.homeManagerModules.default
         inputs.blackmatter-ayatsuri.homeManagerModules.default
         inputs.blackmatter-pleme.homeManagerModules.default
+        inputs.blackmatter-android.homeManagerModules.default
         inputs.blackmatter-macos.homeManagerModules.default
         inputs.blackmatter-services.homeManagerModules.default
       ];
@@ -165,6 +171,7 @@
     nixosModules.blackmatter = { ... }: {
       imports = [
         ./modules/nixos/blackmatter
+        inputs.blackmatter-android.nixosModules.default
         inputs.blackmatter-security.nixosModules.default
         inputs.blackmatter-services.nixosModules.default
         inputs.blackmatter-kubernetes.nixosModules.k3s
