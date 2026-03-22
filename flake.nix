@@ -157,12 +157,17 @@
       fragmentHelpers = import "${inputs.substrate}/lib/hm/flake-fragment-helpers.nix" {
         lib = inputs.nixpkgs.lib;
       };
+      claudeMdHelpers = import "${inputs.substrate}/lib/hm/claude-md-helpers.nix" {
+        lib = inputs.nixpkgs.lib;
+      };
     in {
       imports = [
         # Core: profiles, themes, inline components (git, ssh, etc.)
         ./modules/home-manager/blackmatter
         # Flake fragment option + activation (uses pkgs.nix-place from overlay)
         (fragmentHelpers.mkFlakeFragmentModule {})
+        # CLAUDE.md composable deployment at every directory level
+        (claudeMdHelpers.mkClaudeMdModule {})
         # Extracted component repos
         inputs.blackmatter-nvim.homeManagerModules.default
         inputs.blackmatter-shell.homeManagerModules.default
