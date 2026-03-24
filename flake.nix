@@ -99,6 +99,10 @@
       url = "github:pleme-io/blackmatter-tailscale";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    blackmatter-vpn = {
+      url = "github:pleme-io/blackmatter-vpn";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     blackmatter-anvil = {
       url = "github:pleme-io/blackmatter-anvil";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -192,6 +196,7 @@
       imports = [
         (import ./modules/darwin/blackmatter)
         inputs.blackmatter-tailscale.darwinModules.default
+        inputs.blackmatter-vpn.darwinModules.default
       ];
     };
 
@@ -204,6 +209,7 @@
         inputs.blackmatter-services.nixosModules.default
         inputs.blackmatter-kubernetes.nixosModules.k3s
         inputs.blackmatter-tailscale.nixosModules.default
+        inputs.blackmatter-vpn.nixosModules.default
       ];
     };
 
