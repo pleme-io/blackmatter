@@ -499,11 +499,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1774356516,
-        "narHash": "sha256-r5oDAO61qhW/zmTzqSExWbbIbHm2tPeISiluhDsGQJA=",
+        "lastModified": 1774482122,
+        "narHash": "sha256-V1WmymBViEwfuDmkMZVPrtPYEKxFNOPIw4YaAB3ceXY=",
         "owner": "pleme-io",
         "repo": "blackmatter-vpn",
-        "rev": "0153fded098b5eada93b307f60219f59865b9588",
+        "rev": "41d2c4e3c04c8c22b3471801e93f2be6381a8526",
         "type": "github"
       },
       "original": {
