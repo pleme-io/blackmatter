@@ -135,9 +135,9 @@ in {
         "net.ipv4.tcp_window_scaling" = 1;
         "net.ipv4.tcp_timestamps" = 1;
         "net.ipv4.tcp_sack" = 1;
-        "net.ipv4.conf.all.accept_source_route" = 0;
-        "net.ipv4.conf.default.accept_source_route" = 0;
-        "net.ipv4.tcp_syncookies" = 1;
+        "net.ipv4.conf.all.accept_source_route" = lib.mkDefault 0;
+        "net.ipv4.conf.default.accept_source_route" = lib.mkDefault 0;
+        "net.ipv4.tcp_syncookies" = lib.mkDefault 1;
         "net.ipv4.tcp_max_tw_buckets" = 1440000;
         "net.ipv4.ip_local_port_range" = "10000 65535";
         "net.ipv4.tcp_max_orphans" = 262144;
@@ -152,10 +152,10 @@ in {
         "kernel.printk" = "3 4 1 3";
         "kernel.nmi_watchdog" = 0;
 
-        # ========== SECURITY ==========
-        "kernel.kptr_restrict" = 1;
-        "kernel.dmesg_restrict" = 1;
-        "net.core.bpf_jit_harden" = 1;
+        # ========== SECURITY (mkDefault — blackmatter-security takes priority) ==========
+        "kernel.kptr_restrict" = lib.mkDefault 1;
+        "kernel.dmesg_restrict" = lib.mkDefault 1;
+        "net.core.bpf_jit_harden" = lib.mkDefault 1;
       };
 
       boot.kernelParams = [
