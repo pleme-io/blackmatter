@@ -208,6 +208,7 @@
         inputs.blackmatter-security.nixosModules.default
         inputs.blackmatter-services.nixosModules.default
         inputs.blackmatter-kubernetes.nixosModules.k3s
+        inputs.blackmatter-kubernetes.nixosModules.fluxcd
         inputs.blackmatter-tailscale.nixosModules.default
         inputs.blackmatter-vpn.nixosModules.default
       ];
