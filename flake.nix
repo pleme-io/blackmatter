@@ -112,6 +112,18 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Pleme-io native Rust apps — their flakes expose homeManagerModules.default
+    # directly (see repo-forge's (defrepo …) catalog). Wired straight in without
+    # a blackmatter-<app> wrapper.
+    arnes = {
+      url = "git+ssh://git@github.com/pleme-io/arnes";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    repo-forge = {
+      url = "git+ssh://git@github.com/pleme-io/repo-forge";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Flake placement tool (used by home.activation to write flake.nix files)
     nix-place = {
       url = "github:pleme-io/nix-place";
@@ -188,6 +200,8 @@
         inputs.blackmatter-macos.homeManagerModules.default
         inputs.blackmatter-services.homeManagerModules.default
         inputs.blackmatter-home.homeManagerModules.default
+        inputs.arnes.homeManagerModules.default
+        inputs.repo-forge.homeManagerModules.default
       ];
     };
 
