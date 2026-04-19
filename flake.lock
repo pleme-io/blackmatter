@@ -411,11 +411,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1775947576,
-        "narHash": "sha256-mLz5qqB83zm56Tzi6l+cL2teF3kJg9sibfZD65eN2dQ=",
+        "lastModified": 1776637273,
+        "narHash": "sha256-HkbeyNbMHAKWHs+XnmWM3UUj9Nt7IukUSv/IHkCA6hc=",
         "owner": "pleme-io",
         "repo": "blackmatter-security",
-        "rev": "2318ba4718a87cd8ac322ec0eaaf64d61dea3aac",
+        "rev": "c33392f4a2321eeeef869003229ae3fdb4d81a7a",
         "type": "github"
       },
       "original": {
@@ -5564,16 +5564,17 @@
         "pre-commit-hooks": "pre-commit-hooks_52"
       },
       "locked": {
-        "lastModified": 1773440526,
-        "narHash": "sha256-OcX1MYqUdoalY3/vU67PEx8m6RvqGxX0LwKonjzXn7I=",
-        "owner": "nix-community",
+        "lastModified": 1772186516,
+        "narHash": "sha256-8s28pzmQ6TOIUzznwFibtW1CMieMUl1rYJIxoQYor58=",
+        "owner": "rossng",
         "repo": "crate2nix",
-        "rev": "e697d3049c909580128caa856ab8eb709556a97b",
+        "rev": "ba5dd398e31ee422fbe021767eb83b0650303a6e",
         "type": "github"
       },
       "original": {
-        "owner": "nix-community",
+        "owner": "rossng",
         "repo": "crate2nix",
+        "rev": "ba5dd398e31ee422fbe021767eb83b0650303a6e",
         "type": "github"
       }
     },
@@ -7908,11 +7909,11 @@
         "rust-overlay": "rust-overlay_20"
       },
       "locked": {
-        "lastModified": 1773852093,
-        "narHash": "sha256-oLwpHqWk385e5hmiXSGsqSn8K+wGrBH/OOb9bkQ2bnA=",
+        "lastModified": 1776537207,
+        "narHash": "sha256-CmDPLGo5rK02AV8d0SegYwQA+6aWPFWym6mYKqOzRT0=",
         "owner": "cachix",
         "repo": "devenv",
-        "rev": "e16a58465c5e2ef8d5467c0cf5a88702b886ecb8",
+        "rev": "878c73c0b232d47b5fb79b4c6dbc2cdf3aaa3f76",
         "type": "github"
       },
       "original": {
@@ -27537,16 +27538,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1773600612,
-        "narHash": "sha256-eY8JFns4OeEidye8VIW68LSoykbPO0bQujvQVLLK7Qg=",
+        "lastModified": 1776511668,
+        "narHash": "sha256-g2KEBuHpc3a56c+jPcg0+w6LSuIj6f+zzdztLCOyIhc=",
         "owner": "cachix",
         "repo": "nix",
-        "rev": "ef483d53f25990bf0b4fd39f5414f885977ebd85",
+        "rev": "42d4b7de21c15f28c568410f4383fa06a8458a40",
         "type": "github"
       },
       "original": {
         "owner": "cachix",
-        "ref": "devenv-2.32",
+        "ref": "devenv-2.34",
         "repo": "nix",
         "type": "github"
       }
