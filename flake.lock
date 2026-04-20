@@ -25819,11 +25819,11 @@
         "substrate": "substrate_22"
       },
       "locked": {
-        "lastModified": 1776667563,
-        "narHash": "sha256-7vF6hHA96oL9UH+qjBQ3GKd1sYIuDYWuizAUXAvnYMU=",
+        "lastModified": 1776669313,
+        "narHash": "sha256-ry5bGi+qBzRSWrL0AGeBdjA8PNbp2rhS9CK8hPjSZCw=",
         "ref": "refs/heads/main",
-        "rev": "7f5e597165d34bf25915fdd187ca73639b43d97a",
-        "revCount": 70,
+        "rev": "80781010fa6e83f2ed8f4266482aac083d8f703e",
+        "revCount": 71,
         "type": "git",
         "url": "ssh://git@github.com/pleme-io/namimado"
       },
