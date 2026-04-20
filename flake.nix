@@ -123,6 +123,10 @@
       url = "git+ssh://git@github.com/pleme-io/repo-forge";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    namimado = {
+      url = "git+ssh://git@github.com/pleme-io/namimado";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # Flake placement tool (used by home.activation to write flake.nix files)
     nix-place = {
@@ -202,6 +206,7 @@
         inputs.blackmatter-home.homeManagerModules.default
         inputs.arnes.homeManagerModules.default
         inputs.repo-forge.homeManagerModules.default
+        inputs.namimado.homeManagerModules.default
       ];
     };
 
