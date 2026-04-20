@@ -124,7 +124,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     namimado = {
-      url = "git+ssh://git@github.com/pleme-io/namimado";
+      url = "github:pleme-io/namimado";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
