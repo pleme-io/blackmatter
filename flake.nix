@@ -110,6 +110,11 @@
       url = "github:pleme-io/blackmatter-home";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    blackmatter-cli = {
+      url = "github:pleme-io/blackmatter-cli";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.substrate.follows = "substrate";
+    };
 
     # Pleme-io native Rust apps — their flakes expose homeManagerModules.default
     # directly (see repo-forge's (defrepo …) catalog). Wired straight in without
@@ -168,6 +173,7 @@
       android    = inputs.blackmatter-android;
       ayatsuri   = inputs.blackmatter-ayatsuri;
       claude     = inputs.blackmatter-claude;
+      cli        = inputs.blackmatter-cli;
       desktop    = inputs.blackmatter-desktop;
       ghostty    = inputs.blackmatter-ghostty;
       home       = inputs.blackmatter-home;
@@ -241,10 +247,10 @@
     # ── Fleet report (pure Nix data — no shell) ──────────────────────
     # Consume via:
     #   nix eval --raw .#fleet-report
-    # A real fleet CLI lives in a future blackmatter-cli Rust tool
-    # (substrate/lib/rust-tool-release-flake.nix) that reads this report
-    # as its data source. Deliberately no writeShellScript here —
-    # per-user directive: NO SHELL, Rust + tatara-lisp + Nix + YAML.
+    # The real fleet CLI is `blackmatter-cli` (typed Rust tool, see
+    # `github:pleme-io/blackmatter-cli`) — it reads this report as its
+    # data source. Deliberately no writeShellScript here — per-user
+    # directive: NO SHELL, Rust + tatara-lisp + Nix + YAML.
     fleet-report = fleetReport;
 
     devShells = forAllSystems (system: let
@@ -299,6 +305,8 @@
         inputs.blackmatter-macos.homeManagerModules.default
         inputs.blackmatter-services.homeManagerModules.default
         inputs.blackmatter-home.homeManagerModules.default
+        # The typed fleet CLI replaces the earlier shell-scripted apps.
+        inputs.blackmatter-cli.homeManagerModules.default
         inputs.arnes.homeManagerModules.default
         inputs.repo-forge.homeManagerModules.default
         inputs.namimado.homeManagerModules.default
@@ -341,6 +349,7 @@
         inputs.gcloud.overlays.default
         inputs.blackmatter-ghostty.overlays.default
         inputs.bm-darwin-setup.overlays.default
+        inputs.blackmatter-cli.overlays.default
         zoektMcpOverlay
         codesearchOverlay
         nixPlaceOverlay
