@@ -200,7 +200,13 @@
         inputs.blackmatter-tend.homeManagerModules.default
         inputs.blackmatter-ayatsuri.homeManagerModules.default
         inputs.blackmatter-pleme.homeManagerModules.default
-        inputs.blackmatter-android.homeManagerModules.default
+        # blackmatter-android NOT imported here — it takes pkgs as a
+        # direct module arg, which triggers infinite recursion in NixOS
+        # contexts that evaluate `home-manager.users.<u>._module.freeformType`
+        # before pkgs is resolvable via `_module.args`. Stack
+        # `inputs.blackmatter-android.homeManagerModules.default` explicitly
+        # on workstations that need android tooling. Server nodes and
+        # most fleet HM configs don't.
         inputs.blackmatter-macos.homeManagerModules.default
         inputs.blackmatter-services.homeManagerModules.default
         inputs.blackmatter-home.homeManagerModules.default
