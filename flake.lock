@@ -320,11 +320,11 @@
         "substrate": "substrate_16"
       },
       "locked": {
-        "lastModified": 1774034562,
-        "narHash": "sha256-WDxZLcPqBgyuzsquyeZ3gcLWluI0Jwn7hr6ulhdYZbQ=",
+        "lastModified": 1776734672,
+        "narHash": "sha256-Hy52lAKIK+45t7ehkbDODmaBeNMQF4RdIrcHP1nh+qQ=",
         "owner": "pleme-io",
         "repo": "blackmatter-macos",
-        "rev": "f1fa1b664dc4d3bdfce67a07fcefd603f08c2bb6",
+        "rev": "0d0d3b004e97b2253f8d36f51cc7bfcee6d76f92",
         "type": "github"
       },
       "original": {

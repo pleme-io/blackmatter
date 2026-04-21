@@ -220,22 +220,32 @@
       body = lib.concatStringsSep "\n"
         (lib.mapAttrsToList formatLine componentInputs);
     in legend + body + "\n";
+    # ── Fleet checks roll-up ─────────────────────────────────────────
+    # Every component's checks.<sys>.* lifted to the aggregator as
+    # checks.<sys>.<component>-<check>. `nix flake check` at the
+    # aggregator level therefore runs every fleet check in one shot.
+    perComponentChecks = system: name: flake: let
+      checks = flake.checks.${system} or {};
+    in lib.mapAttrs'
+      (checkName: drv: lib.nameValuePair "${name}-${checkName}" drv)
+      checks;
+
+    fleetChecks = system: lib.foldl' (acc: s: acc // s) {}
+      (lib.mapAttrsToList (perComponentChecks system) componentInputs);
   in {
-    # ── Fleet audit app ──────────────────────────────────────────────
-    # Run `nix run .#fleet-check` to print a per-component report.
-    # Useful for catching new components that were added to inputs but
-    # not registered in .typescape.yaml components: or missing helper
-    # metadata.
-    apps = forAllSystems (system: {
-      fleet-check = {
-        type = "app";
-        program = toString (inputs.nixpkgs.legacyPackages.${system}.writeShellScript
-          "blackmatter-fleet-check" ''
-            cat <<'REPORT_EOF'
-${fleetReport}REPORT_EOF
-          '');
-      };
-    });
+    # ── Rolled-up checks ─────────────────────────────────────────────
+    # `nix flake check` at the aggregator builds every component's
+    # checks (per-system, only what each component exposes).
+    checks = forAllSystems (system: fleetChecks system);
+
+    # ── Fleet report (pure Nix data — no shell) ──────────────────────
+    # Consume via:
+    #   nix eval --raw .#fleet-report
+    # A real fleet CLI lives in a future blackmatter-cli Rust tool
+    # (substrate/lib/rust-tool-release-flake.nix) that reads this report
+    # as its data source. Deliberately no writeShellScript here —
+    # per-user directive: NO SHELL, Rust + tatara-lisp + Nix + YAML.
+    fleet-report = fleetReport;
 
     devShells = forAllSystems (system: let
       pkgs = inputs.nixpkgs.legacyPackages.${system};
