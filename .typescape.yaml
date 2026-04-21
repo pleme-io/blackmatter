@@ -1,0 +1,105 @@
+# blackmatter aggregator — typescape roll-up.
+# Aggregates all 30 blackmatter-* component manifests into a single composition
+# root. Each entry in `components` declares the intended shape (flake style)
+# and whether the repo is on the canonical helper or intentionally custom.
+# Merkle root is synthesized by arch-synthesizer once the component-level
+# attestations are sealed.
+
+schema_version: 1
+manifest:
+  name: blackmatter
+  kind: BlackmatterAggregator
+  archetype: blackmatter-aggregator
+  description: |
+    Composition root — aggregates all blackmatter-* component modules into
+    unified homeManagerModules.blackmatter, darwinModules.blackmatter, and
+    nixosModules.blackmatter. Flake is intentionally custom (module-import
+    composition, not covered by blackmatter-component-flake.nix).
+  custom_flake: true
+
+dimensions:
+  vocabulary: [aggregator, composition, module-import, overlay-compose]
+  domains: [Nix]
+  stack: [HomeManager, NixOS, Darwin]
+  modules:
+    home_manager: modules/home-manager/blackmatter/
+    nixos: modules/nixos/blackmatter/
+    darwin: modules/darwin/blackmatter/
+  render:
+    produces:
+      - "homeManagerModules.blackmatter (composes 20+ HM modules)"
+      - "darwinModules.blackmatter (composes Darwin modules)"
+      - "nixosModules.blackmatter (composes NixOS modules)"
+      - "overlays.combined (fold of sops-nix, claude-code, aws-cli, gcloud, …)"
+  compliance:
+    satisfies: []
+    participates: []
+  dag:
+    inputs:
+      - nixpkgs
+      - sops-nix
+      - fenix
+      - claude-code
+      - aws-cli
+      - gcloud
+      - substrate
+      - devenv
+      - nix-place
+      - bm-darwin-setup
+      - arnes
+      - repo-forge
+      - namimado
+      # All blackmatter-* components:
+      - blackmatter-nvim
+      - blackmatter-shell
+      - blackmatter-claude
+      - blackmatter-desktop
+      - blackmatter-security
+      - blackmatter-kubernetes
+      - blackmatter-services
+      - blackmatter-ghostty
+      - blackmatter-opencode
+      - blackmatter-tend
+      - blackmatter-ayatsuri
+      - blackmatter-pleme
+      - blackmatter-android
+      - blackmatter-macos
+      - blackmatter-tailscale
+      - blackmatter-vpn
+      - blackmatter-anvil
+      - blackmatter-home
+  attestation: { merkle_root: null, signed_by: null, producer: aggregator }
+
+# Component registry — each entry mirrors the repo's own .typescape.yaml
+# manifest.archetype field. Sorted by archetype for quick auditing. This
+# section is authoritative for fleet-wide queries without walking every repo.
+components:
+  - { name: blackmatter-anvil,      archetype: blackmatter-component-hm-only,              flake: helper }
+  - { name: blackmatter-atlassian,  archetype: blackmatter-component-hm-only,              flake: helper }
+  - { name: blackmatter-code,       archetype: blackmatter-component-hm-only,              flake: helper }
+  - { name: blackmatter-desktop,    archetype: blackmatter-component-hm-only,              flake: helper }
+  - { name: blackmatter-github,     archetype: blackmatter-component-hm-only,              flake: helper }
+  - { name: blackmatter-home,       archetype: blackmatter-component-hm-only,              flake: helper }
+  - { name: blackmatter-mado,       archetype: blackmatter-component-hm-only,              flake: helper }
+  - { name: blackmatter-movie,      archetype: blackmatter-component-hm-only,              flake: helper }
+  - { name: blackmatter-pleme,      archetype: blackmatter-component-hm-only,              flake: helper }
+  - { name: blackmatter-ayatsuri,   archetype: blackmatter-component-hm-only,              flake: helper }
+  - { name: blackmatter-tend,       archetype: blackmatter-component-hm-only,              flake: helper }
+  - { name: blackmatter-cursor,     archetype: blackmatter-component-hm-overlay,           flake: helper }
+  - { name: blackmatter-android,    archetype: blackmatter-component-hm-nixos,             flake: helper }
+  - { name: blackmatter-services,   archetype: blackmatter-component-hm-nixos,             flake: helper }
+  - { name: blackmatter-security,   archetype: blackmatter-component-hm-nixos,             flake: helper }
+  - { name: blackmatter-secrets,    archetype: blackmatter-component-hm-nixos-darwin,      flake: helper }
+  - { name: blackmatter-tailscale,  archetype: blackmatter-component-nixos-darwin,         flake: helper }
+  - { name: blackmatter-vpn,        archetype: blackmatter-component-nixos-darwin,         flake: helper }
+  - { name: blackmatter-opencode,   archetype: blackmatter-component-hm-package,           flake: helper }
+  - { name: blackmatter-akeyless,   archetype: blackmatter-component-custom-overlay,       flake: custom }
+  - { name: blackmatter-ghostty,    archetype: blackmatter-component-custom-package,       flake: custom }
+  - { name: blackmatter-go,         archetype: blackmatter-component-custom-overlay,       flake: custom }
+  - { name: blackmatter-zig,        archetype: blackmatter-component-custom-overlay,       flake: custom }
+  - { name: blackmatter-kubernetes, archetype: blackmatter-component-custom-multimodule,   flake: custom }
+  - { name: blackmatter-macos,      archetype: blackmatter-component-custom-darwin-overlay, flake: custom }
+  - { name: blackmatter-nvim,       archetype: blackmatter-component-custom-package-hm,    flake: custom }
+  - { name: blackmatter-shell,      archetype: blackmatter-component-custom-package-hm,    flake: custom }
+  - { name: blackmatter-direnv,     archetype: blackmatter-component-rust-workspace,       flake: custom }
+  - { name: blackmatter-claude,     archetype: blackmatter-component-hm-overlay,           flake: pending_sweep }
