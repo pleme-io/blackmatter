@@ -154,10 +154,90 @@
 
   outputs = { self, ... } @ inputs:
   let
-    forAllSystems = inputs.nixpkgs.lib.genAttrs [
+    lib = inputs.nixpkgs.lib;
+    forAllSystems = lib.genAttrs [
       "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin"
     ];
+
+    # ── Fleet registry ───────────────────────────────────────────────
+    # Every blackmatter-* component input, keyed by short name. Used by
+    # the fleet-check app to enumerate the fleet and query each repo's
+    # `blackmatter.component` metadata. Keep in sync with the inputs block
+    # above and .typescape.yaml → components:.
+    componentInputs = {
+      anvil      = inputs.blackmatter-anvil;
+      android    = inputs.blackmatter-android;
+      ayatsuri   = inputs.blackmatter-ayatsuri;
+      claude     = inputs.blackmatter-claude;
+      desktop    = inputs.blackmatter-desktop;
+      ghostty    = inputs.blackmatter-ghostty;
+      home       = inputs.blackmatter-home;
+      kubernetes = inputs.blackmatter-kubernetes;
+      macos      = inputs.blackmatter-macos;
+      nvim       = inputs.blackmatter-nvim;
+      opencode   = inputs.blackmatter-opencode;
+      pleme      = inputs.blackmatter-pleme;
+      security   = inputs.blackmatter-security;
+      services   = inputs.blackmatter-services;
+      shell      = inputs.blackmatter-shell;
+      tailscale  = inputs.blackmatter-tailscale;
+      tend       = inputs.blackmatter-tend;
+      vpn        = inputs.blackmatter-vpn;
+    };
+
+    fleetReport = let
+      formatLine = name: flake: let
+        meta = flake.blackmatter.component or null;
+        outputs = {
+          hm     = flake ? homeManagerModules;
+          nixos  = flake ? nixosModules;
+          darwin = flake ? darwinModules;
+          ovl    = flake ? overlays;
+          pkg    = flake ? packages;
+        };
+        tag = o:
+          (if o.hm then "H" else "·")
+          + (if o.nixos then "N" else "·")
+          + (if o.darwin then "D" else "·")
+          + (if o.ovl then "O" else "·")
+          + (if o.pkg then "P" else "·");
+        archetype =
+          if meta == null then "custom-flake"
+          else meta.shortName or name;
+        status = if meta == null then "custom" else "helper";
+      in "  ${lib.strings.fixedWidthString 26 " " "blackmatter-${name}"}"
+         + "  ${tag outputs}"
+         + "  ${lib.strings.fixedWidthString 8 " " status}"
+         + "  ${archetype}";
+      legend = ''
+          blackmatter fleet-check report
+          ──────────────────────────────
+          Flag string: H=homeManagerModules N=nixosModules D=darwinModules O=overlays P=packages
+          Status:      helper = uses substrate/lib/blackmatter-component-flake.nix
+                       custom = intentionally custom flake (see .typescape.yaml custom_flake_reason)
+
+          Components (${toString (builtins.length (builtins.attrNames componentInputs))}):
+      '';
+      body = lib.concatStringsSep "\n"
+        (lib.mapAttrsToList formatLine componentInputs);
+    in legend + body + "\n";
   in {
+    # ── Fleet audit app ──────────────────────────────────────────────
+    # Run `nix run .#fleet-check` to print a per-component report.
+    # Useful for catching new components that were added to inputs but
+    # not registered in .typescape.yaml components: or missing helper
+    # metadata.
+    apps = forAllSystems (system: {
+      fleet-check = {
+        type = "app";
+        program = toString (inputs.nixpkgs.legacyPackages.${system}.writeShellScript
+          "blackmatter-fleet-check" ''
+            cat <<'REPORT_EOF'
+${fleetReport}REPORT_EOF
+          '');
+      };
+    });
+
     devShells = forAllSystems (system: let
       pkgs = inputs.nixpkgs.legacyPackages.${system};
     in {
