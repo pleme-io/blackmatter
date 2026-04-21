@@ -89,7 +89,6 @@
     blackmatter-android = {
       url = "github:pleme-io/blackmatter-android";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.devenv.follows = "devenv";
     };
     blackmatter-macos = {
       url = "github:pleme-io/blackmatter-macos";
