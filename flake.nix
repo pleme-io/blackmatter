@@ -132,6 +132,19 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # tatara-lisp — pleme-io canonical scripting language (.tlisp replaces
+    # bash in nix-run apps, fleet flows, and any orchestration beyond
+    # 3-line inline glue). Exposes homeManagerModules.default,
+    # nixosModules.default, darwinModules.default, and overlays.default
+    # (adds `pkgs.tatara-script` + `pkgs.tatara-lisp-script`). Wired
+    # into all three module trees so `tatara-script` is on every PATH
+    # by default — see
+    # `modules/{home-manager,nixos,darwin}/blackmatter/default.nix`.
+    tatara-lisp = {
+      url = "github:pleme-io/tatara-lisp";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Flake placement tool (used by home.activation to write flake.nix files)
     nix-place = {
       url = "github:pleme-io/nix-place";
@@ -310,6 +323,7 @@
         inputs.arnes.homeManagerModules.default
         inputs.repo-forge.homeManagerModules.default
         inputs.namimado.homeManagerModules.default
+        inputs.tatara-lisp.homeManagerModules.default
       ];
     };
 
@@ -319,6 +333,7 @@
         (import ./modules/darwin/blackmatter)
         inputs.blackmatter-tailscale.darwinModules.default
         inputs.blackmatter-vpn.darwinModules.default
+        inputs.tatara-lisp.darwinModules.default
       ];
     };
 
@@ -334,6 +349,7 @@
         inputs.blackmatter-kubernetes.nixosModules.fluxcd
         inputs.blackmatter-tailscale.nixosModules.default
         inputs.blackmatter-vpn.nixosModules.default
+        inputs.tatara-lisp.nixosModules.default
       ];
     };
 
@@ -350,6 +366,7 @@
         inputs.blackmatter-ghostty.overlays.default
         inputs.bm-darwin-setup.overlays.default
         inputs.blackmatter-cli.overlays.default
+        inputs.tatara-lisp.overlays.default
         zoektMcpOverlay
         codesearchOverlay
         nixPlaceOverlay
