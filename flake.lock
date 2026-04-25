@@ -482,11 +482,11 @@
         "skim-tab": "skim-tab"
       },
       "locked": {
-        "lastModified": 1777125620,
-        "narHash": "sha256-i3QGYEKcce5FzoP03ld8C9/MjXCaYqbx+IXpcj85Qf4=",
+        "lastModified": 1777126688,
+        "narHash": "sha256-BY+WjqKkfj9BKub0nh1mOR97fqNuCo656BDB9ikkMvA=",
         "owner": "pleme-io",
         "repo": "blackmatter-shell",
-        "rev": "cbb87f2f1ef7aec3b862f13b60908cf5d40b66dd",
+        "rev": "48ca295c6b6fe05fa10c931cdb847fb0b2e57305",
         "type": "github"
       },
       "original": {
