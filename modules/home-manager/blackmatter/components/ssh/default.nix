@@ -179,6 +179,19 @@ in {
 
       extraConfig = cfg.extraConfig;
 
+      # UseKeychain is an Apple-fork-only OpenSSH option. Portable OpenSSH
+      # (which we ship via Nix on both Darwin and Linux) treats it as a
+      # hard parse error. IgnoreUnknown only suppresses subsequent unknown
+      # options, so it MUST appear at file-global scope before any Host
+      # block that may emit UseKeychain. home-manager renders
+      # extraOptionOverrides at the very top of ~/.ssh/config (above all
+      # match/host blocks), making it the only ordering-safe placement.
+      # On Linux this is a no-op — neither blackmatter nor any node
+      # profile emits UseKeychain there.
+      extraOptionOverrides = mkIf pkgs.stdenv.isDarwin {
+        IgnoreUnknown = "UseKeychain";
+      };
+
       matchBlocks = mkMerge [
         # Global defaults via wildcard match
         {
