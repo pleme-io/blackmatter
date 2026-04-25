@@ -24,6 +24,22 @@ in {
       description = "Use /dev/null for known hosts file (never save host keys)";
     };
 
+    quiet = mkOption {
+      type = types.bool;
+      default = true;
+      description = ''
+        Suppress non-error chatter from the ssh client — sets
+        `LogLevel ERROR` at the wildcard `Host *` scope. Hides messages
+        like "Warning: Permanently added '<host>' (ED25519) to the
+        list of known hosts." that fire on every TOFU connection,
+        plus other informational notices that distract from real
+        failures. Defaults to true on every fleet workstation so
+        `ssh <peer>` lands at a clean prompt with zero pre-shell
+        chatter; flip to false on a node where you want full ssh
+        diagnostics back.
+      '';
+    };
+
     nixBuilder = {
       enable = mkOption {
         type = types.bool;
@@ -211,6 +227,9 @@ in {
               })
               (mkIf cfg.useNullKnownHosts {
                 UserKnownHostsFile = "/dev/null";
+              })
+              (mkIf cfg.quiet {
+                LogLevel = "ERROR";
               })
               (mkIf cfg.performance.enableCompression {
                 Compression = "yes";
