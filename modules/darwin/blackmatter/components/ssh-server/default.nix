@@ -41,6 +41,20 @@ in
       default = [ "TERM" "COLORTERM" "TERM_PROGRAM" "TERMINFO" "TERMINFO_DIRS" ];
       description = "Environment variables sshd should accept from clients.";
     };
+
+    quietLogin = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = ''
+        Silence SSH login banners — suppress the MOTD and "Last login"
+        line so `ssh <node>` lands directly at a prompt with no chatter.
+        Maps to sshd_config `PrintMotd no` + `PrintLastLog no`. Defaults
+        to true; flip to false on any node that should keep the standard
+        login banner. Same option name + semantics as the NixOS side so
+        a single `blackmatter.components.sshServer.quietLogin` value
+        works on every fleet node regardless of platform.
+      '';
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -51,6 +65,8 @@ in
           (lib.optional (!cfg.permitPasswordAuth) "PasswordAuthentication no")
           ++ (lib.optional (!cfg.permitPasswordAuth) "KbdInteractiveAuthentication no")
           ++ [ "PubkeyAuthentication yes" ]
+          ++ (lib.optional cfg.quietLogin "PrintMotd no")
+          ++ (lib.optional cfg.quietLogin "PrintLastLog no")
           ++ (lib.optional (cfg.acceptEnv != [])
             "AcceptEnv ${lib.concatStringsSep " " cfg.acceptEnv}")
         );

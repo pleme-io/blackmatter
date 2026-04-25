@@ -64,6 +64,18 @@ in
       '';
     };
 
+    quietLogin = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = ''
+        Silence SSH login banners — suppress the MOTD and "Last login"
+        line so `ssh <node>` lands directly at a prompt with no chatter.
+        Maps to sshd_config `PrintMotd no` + `PrintLastLog no`. Defaults
+        to true; flip to false on any node that should keep the standard
+        login banner.
+      '';
+    };
+
     performance = {
       compression = lib.mkOption {
         type = lib.types.bool;
@@ -88,6 +100,8 @@ in
         PasswordAuthentication = lib.mkDefault cfg.permitPasswordAuth;
         Compression = lib.mkDefault cfg.performance.compression;
         TCPKeepAlive = lib.mkDefault cfg.performance.tcpKeepAlive;
+        PrintMotd = lib.mkDefault (!cfg.quietLogin);
+        PrintLastLog = lib.mkDefault (!cfg.quietLogin);
       };
     };
 
