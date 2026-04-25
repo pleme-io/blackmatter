@@ -90,33 +90,40 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    # ── sshd config + authorized keys (single environment.etc block) ─
-    environment.etc = {
-      "ssh/sshd_config.d/100-blackmatter.conf" = {
-        text = lib.concatStringsSep "\n" (
-          (lib.optional (!cfg.permitPasswordAuth) "PasswordAuthentication no")
-          ++ (lib.optional (!cfg.permitPasswordAuth) "KbdInteractiveAuthentication no")
-          ++ [ "PubkeyAuthentication yes" ]
-          ++ (lib.optional cfg.quietLogin "PrintMotd no")
-          ++ (lib.optional cfg.quietLogin "PrintLastLog no")
-          ++ (lib.optional (cfg.acceptEnv != [])
-            "AcceptEnv ${lib.concatStringsSep " " cfg.acceptEnv}")
-        );
-      };
-    } // lib.listToAttrs (map (user: {
-      name = "ssh/nix_authorized_keys.d/${user}";
-      value = {
-        text = lib.concatStringsSep "\n" cfg.authorizedKeys;
-      };
-    }) cfg.users);
-
-    # ── PPPC profile granting FDA to SSH-spawned processes ──────
-    # Generated unconditionally at the same store path so subsequent
-    # `profiles install` invocations are a no-op once the profile is
-    # active. Identifier is namespaced under `io.pleme.blackmatter.*`
-    # so we never collide with user / MDM-installed profiles.
-    environment.etc."blackmatter/profiles/remote-ssh-fda.mobileconfig" = lib.mkIf cfg.fullDiskAccess {
-      text = ''
+    # ── sshd config + authorized keys + FDA profile ─────────────
+    # All three contributions to environment.etc are composed via
+    # lib.mkMerge so the static attribute set is defined exactly
+    # once (nix-darwin treats `environment.etc.x = …` and
+    # `environment.etc = { x = …; }` in the same config block as
+    # duplicate definitions of `environment.etc`, which is a hard
+    # eval error — mkMerge sidesteps that).
+    environment.etc = lib.mkMerge [
+      {
+        "ssh/sshd_config.d/100-blackmatter.conf" = {
+          text = lib.concatStringsSep "\n" (
+            (lib.optional (!cfg.permitPasswordAuth) "PasswordAuthentication no")
+            ++ (lib.optional (!cfg.permitPasswordAuth) "KbdInteractiveAuthentication no")
+            ++ [ "PubkeyAuthentication yes" ]
+            ++ (lib.optional cfg.quietLogin "PrintMotd no")
+            ++ (lib.optional cfg.quietLogin "PrintLastLog no")
+            ++ (lib.optional (cfg.acceptEnv != [])
+              "AcceptEnv ${lib.concatStringsSep " " cfg.acceptEnv}")
+          );
+        };
+      }
+      (lib.listToAttrs (map (user: {
+        name = "ssh/nix_authorized_keys.d/${user}";
+        value = {
+          text = lib.concatStringsSep "\n" cfg.authorizedKeys;
+        };
+      }) cfg.users))
+      (lib.mkIf cfg.fullDiskAccess {
+        # PPPC profile granting Full Disk Access to SSH-spawned
+        # processes. Identifier is namespaced under
+        # `io.pleme.blackmatter.*` so it never collides with user /
+        # MDM-installed profiles.
+        "blackmatter/profiles/remote-ssh-fda.mobileconfig" = {
+          text = ''
         <?xml version="1.0" encoding="UTF-8"?>
         <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
         <plist version="1.0">
@@ -184,8 +191,10 @@ in
           <integer>1</integer>
         </dict>
         </plist>
-      '';
-    };
+          '';
+        };
+      })
+    ];
 
     # ── Enable sshd + set login shells via bm-darwin-setup ──────
     system.activationScripts.postActivation.text = let
