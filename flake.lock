@@ -370,11 +370,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1776834609,
-        "narHash": "sha256-A6YRvMHQcHBnU7XiJBIqggZdN5NnWwlUrgE+1+so8JE=",
+        "lastModified": 1777125591,
+        "narHash": "sha256-EN2e9gaxsjPIT/YnumUZyCFUyoexIRMofMdjioxxisM=",
         "owner": "pleme-io",
         "repo": "blackmatter-nvim",
-        "rev": "40574b14cf112f77c19d1c000eb80c69ecab0196",
+        "rev": "c29810947d060c9521c06c27b5415a7cbd7b1d4b",
         "type": "github"
       },
       "original": {
@@ -482,11 +482,11 @@
         "skim-tab": "skim-tab"
       },
       "locked": {
-        "lastModified": 1776834659,
-        "narHash": "sha256-ww+9tVLVtFlnhYayHfTmyxrjReRz5L7/DdEYMMomGjk=",
+        "lastModified": 1777125620,
+        "narHash": "sha256-i3QGYEKcce5FzoP03ld8C9/MjXCaYqbx+IXpcj85Qf4=",
         "owner": "pleme-io",
         "repo": "blackmatter-shell",
-        "rev": "725a8c8a821ccfe6ad192e6d3c2c5eefd75f7212",
+        "rev": "cbb87f2f1ef7aec3b862f13b60908cf5d40b66dd",
         "type": "github"
       },
       "original": {
