@@ -1,5 +1,15 @@
 # blackmatter — Claude Orientation
 
+> **★★★ CSE / Knowable Construction.** This aggregator composes
+> blackmatter-* HM/NixOS/Darwin modules. Per Constructive Substrate
+> Engineering's principle 1 (solve problems once, in one place): apps
+> imported here MUST NOT be re-imported in downstream sharedModules
+> lists — that produces "option already declared" errors and breaks
+> the substrate's claim of single-source-of-truth. When adding a new
+> aggregator-imported app, also remove it from any downstream inline
+> import. Canonical spec:
+> [`theory/CONSTRUCTIVE-SUBSTRATE-ENGINEERING.md`](https://github.com/pleme-io/theory/blob/main/CONSTRUCTIVE-SUBSTRATE-ENGINEERING.md).
+
 One-sentence purpose: composition root — aggregates every `blackmatter-*`
 component plus a handful of upstream flakes (sops-nix, claude-code,
 aws-cli, gcloud) into unified HM / NixOS / Darwin modules and a combined
