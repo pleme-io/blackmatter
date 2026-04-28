@@ -10,6 +10,7 @@ with lib; {
     ./attic-netrc
     ./aws
     ./env
+    ./git-stack
     ./gitconfig
     ./hammerspoon
     ./macos-wallpaper
