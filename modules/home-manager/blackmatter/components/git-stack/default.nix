@@ -42,14 +42,11 @@ in {
               between them. The `tool` option still selects which one's
               aliases and global config are active.
 
-              CAVEAT: `git-spice` ships a `gs` binary that collides with
-              Ghostscript's `gs`. Setting `installBoth = true` on a
-              profile that also installs Ghostscript triggers a
-              `pkgs.buildEnv` conflict. Either:
-                - leave `installBoth = false` and switch via `tool` if
-                  you actually need git-spice (Ghostscript wins), or
-                - exclude Ghostscript from the same buildEnv, or
-                - use `nix shell nixpkgs#git-spice` ad hoc.
+              git-spice is exposed as `git-spice` (long name only).
+              Upstream's short `gs` binary is dropped to avoid colliding
+              with Ghostscript's `gs` in the same pkgs.buildEnv. The
+              component's git aliases (`git stack` etc.) dispatch to the
+              long name when `tool = "git-spice"`.
             '';
           };
 
@@ -115,11 +112,33 @@ in {
 
   config = mkIf cfg.enable (mkMerge [
     # Install the binaries from nixpkgs.
-    {
-      home.packages = with pkgs;
-        (optional (cfg.tool == "spr" || cfg.installBoth) spr)
-        ++ (optional (cfg.tool == "git-spice" || cfg.installBoth) git-spice);
-    }
+    #
+    # git-spice is exposed as `git-spice` (long name only) — the upstream
+    # `gs` short binary collides with Ghostscript's `gs` in pkgs.buildEnv.
+    # Renaming via symlinkJoin keeps both tools installable and resolves
+    # the conflict at the substrate level rather than asking operators to
+    # choose between stacked-PR tooling and ghostscript. Aliases below
+    # dispatch to `git-spice ...` for the renamed long-name form.
+    (let
+      git-spice-renamed = pkgs.symlinkJoin {
+        name = "git-spice-bm-${pkgs.git-spice.version}";
+        pname = "git-spice-bm";
+        version = pkgs.git-spice.version;
+        paths = [ pkgs.git-spice ];
+        postBuild = ''
+          if [ -e $out/bin/gs ]; then
+            rm $out/bin/gs
+          fi
+          ln -s ${pkgs.git-spice}/bin/gs $out/bin/git-spice
+        '';
+        meta = pkgs.git-spice.meta // {
+          description = "${pkgs.git-spice.meta.description or "git-spice"} (binary renamed from gs to git-spice to avoid ghostscript collision)";
+        };
+      };
+    in {
+      home.packages = (optional (cfg.tool == "spr" || cfg.installBoth) pkgs.spr)
+        ++ (optional (cfg.tool == "git-spice" || cfg.installBoth) git-spice-renamed);
+    })
 
     # Write the per-user spr config (only when spr is active).
     (mkIf (cfg.tool == "spr") {
@@ -156,12 +175,15 @@ in {
             land     = !spr land
             stackls  = !spr status
         '';
+        # git-spice's `gs` binary is renamed to `git-spice` in this
+        # component to avoid the Ghostscript collision; aliases dispatch
+        # to the long name accordingly.
         spiceAliases = ''
           [alias]
-            stack    = !gs stack submit
-            restack  = !gs stack restack
-            land     = !gs branch land
-            stackls  = !gs log short
+            stack    = !git-spice stack submit
+            restack  = !git-spice stack restack
+            land     = !git-spice branch land
+            stackls  = !git-spice log short
         '';
       in {
         home.file.".config/git/git-stack.gitconfig".text =
