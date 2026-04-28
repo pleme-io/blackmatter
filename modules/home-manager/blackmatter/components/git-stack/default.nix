@@ -41,6 +41,15 @@ in {
               Install both `spr` and `git-spice` so users can experiment
               between them. The `tool` option still selects which one's
               aliases and global config are active.
+
+              CAVEAT: `git-spice` ships a `gs` binary that collides with
+              Ghostscript's `gs`. Setting `installBoth = true` on a
+              profile that also installs Ghostscript triggers a
+              `pkgs.buildEnv` conflict. Either:
+                - leave `installBoth = false` and switch via `tool` if
+                  you actually need git-spice (Ghostscript wins), or
+                - exclude Ghostscript from the same buildEnv, or
+                - use `nix shell nixpkgs#git-spice` ad hoc.
             '';
           };
 
