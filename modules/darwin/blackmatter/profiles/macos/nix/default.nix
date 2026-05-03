@@ -170,13 +170,13 @@ in {
 
             userSshKeyPath = mkOption {
               type = types.str;
-              default = "/Users/drzzln/.ssh/nix_builder_ed25519";
+              default = "/Users/${config.blackmatter.profiles.macos.system.primaryUser}/.ssh/nix_builder_ed25519";
               description = "User SSH key path to copy from during activation";
             };
 
             trustedUsers = mkOption {
               type = types.listOf types.str;
-              default = ["root" "@admin" "drzzln"];
+              default = ["root" "@admin" config.blackmatter.profiles.macos.system.primaryUser];
               description = "List of trusted Nix users";
             };
 

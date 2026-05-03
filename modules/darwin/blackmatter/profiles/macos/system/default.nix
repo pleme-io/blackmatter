@@ -22,7 +22,6 @@ in {
 
             primaryUser = mkOption {
               type = types.str;
-              default = "drzzln";
               description = "Primary user for the system";
             };
 
