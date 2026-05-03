@@ -76,7 +76,7 @@ with lib; let
 
       output = mkOption {
         type = types.str;
-        default = "text";
+        default = "json";
         description = "CLI output format (text, json, yaml, table).";
       };
 
