@@ -67,6 +67,32 @@ in {
                     default = {};
                     description = "Per-domain address overrides (domain → IP).";
                   };
+                  health = mkOption {
+                    # Free-form attrset of probe configuration; consumed
+                    # by the M2.1 oboe daemon. We don't constrain shape
+                    # here so future probe types (TCP, DoT) don't force
+                    # a module update.
+                    type = types.attrs;
+                    description = ''
+                      Health probe configuration for the orchestrator
+                      (oboe, M2.1). Fields:
+                        - query                    (str)
+                        - expect                   (str: "answer-nonempty" | "rcode-ok")
+                        - intervalMs               (int)
+                        - timeoutMs                (int)
+                        - failuresBeforeUnhealthy  (int)
+                    '';
+                  };
+                  fallback = mkOption {
+                    type = types.attrs;
+                    default = { kind = "promote-secondary"; };
+                    description = ''
+                      What the orchestrator does when the health probe
+                      declares the primary chain unhealthy. Fields:
+                        - kind   (str)
+                        - label  (str, only when kind = "switch-posture")
+                    '';
+                  };
                 };
               });
               default = null;
@@ -153,6 +179,18 @@ in {
       if cfg.posture != null
       then cfg.posture.addresses
       else {};
+    # Sidecar JSON file the M2.1 oboe daemon will read on startup +
+    # SIGHUP. Contains the full posture: health probe, fallback policy,
+    # plus the chain itself. Lives at /etc/blackmatter/dns-posture.json
+    # (oboe watches that path); absence means "no posture authored,
+    # fallthrough to operator defaults".
+    postureSidecar =
+      if cfg.posture != null
+      then builtins.toJSON {
+        inherit (cfg.posture) label description postureId
+                              upstreamServers addresses health fallback;
+      }
+      else null;
   in {
     # Enable dnsmasq for local DNS resolution
     services.dnsmasq = {
@@ -168,8 +206,13 @@ in {
       ];
     };
 
-    # Create a custom dnsmasq configuration file and resolver entries
+    # Create a custom dnsmasq configuration file and resolver entries.
+    # When a posture is authored, also drop the typed JSON sidecar that
+    # the M2.1 oboe daemon will read.
     environment.etc = mkMerge ([
+      (mkIf (postureSidecar != null) {
+        "blackmatter/dns-posture.json".text = postureSidecar;
+      })
       {
         "dnsmasq.d/local.conf" = {
           text = ''
