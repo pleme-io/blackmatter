@@ -223,11 +223,11 @@
         "workspace-config": "workspace-config"
       },
       "locked": {
-        "lastModified": 1777326881,
-        "narHash": "sha256-W19mVihBQRP5ESLY2BzzgIB0fcQSeF6j6ZkHxWbRSJY=",
+        "lastModified": 1778225494,
+        "narHash": "sha256-ZOZpDftJm4eViesuR9CyEIJ48SVXWePvQveVM3/6Gz8=",
         "owner": "pleme-io",
         "repo": "blackmatter-ghostty",
-        "rev": "647260b9cd31bc65ec44e08c91a5c35975a4fa15",
+        "rev": "699277f5da3d19a2221ff00dbb63b4fba95721e7",
         "type": "github"
       },
       "original": {
