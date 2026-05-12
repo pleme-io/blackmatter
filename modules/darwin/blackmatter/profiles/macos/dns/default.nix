@@ -161,6 +161,32 @@ in {
               default = true;
               description = "Enable DNS management shell aliases";
             };
+
+            systemResolverFallbacks = mkOption {
+              type = types.nullOr (types.listOf types.str);
+              default = null;
+              description = ''
+                Fallback resolvers appended after `cfg.bind` when the
+                activation script writes the macOS system DNS list for
+                each enabled network service.
+
+                The macOS resolver tries servers in order: if dnsmasq
+                (on `cfg.bind`) is alive it answers; if it dies or
+                refuses, the fallback servers keep DNS working.
+                Without fallbacks, dnsmasq becoming wedged takes the
+                whole host's DNS down (Chrome and other userspace
+                clients lose connectivity even though raw IPs are
+                reachable).
+
+                Defaults to `null`, which means "inherit the dnsmasq
+                upstream chain" — the same public resolvers dnsmasq
+                forwards to are also installed as system fallbacks.
+                Set to an explicit list to override.
+
+                Set to `[]` to disable fallbacks (not recommended).
+              '';
+              example = literalExpression ''[ "1.1.1.1" "8.8.8.8" ]'';
+            };
           };
         };
       };
@@ -270,14 +296,27 @@ in {
       }
     '';
 
-    # Point all network services at dnsmasq on activation.
-    # dnsmasq forwards non-local queries to upstream servers (1.1.1.1, 8.8.8.8),
-    # so internet DNS continues to work. This ensures /etc/resolver/* files
-    # are actually consulted by macOS for local domain resolution.
-    system.activationScripts.postActivation.text = lib.mkAfter ''
+    # Point all network services at dnsmasq on activation, with public
+    # resolvers as system-level fallbacks. The macOS resolver tries
+    # servers in order — if dnsmasq dies or wedges (e.g. Tailscale
+    # MagicDNS proxy hang we hit on 2026-05-12), DNS keeps working via
+    # the fallback chain. dnsmasq forwards non-local queries to its
+    # upstreamServers, so the fallback chain typically matches that
+    # list (see `cfg.systemResolverFallbacks`).
+    #
+    # This ensures /etc/resolver/* files are still consulted by macOS
+    # for local domain resolution.
+    system.activationScripts.postActivation.text = let
+      fallbacks =
+        if cfg.systemResolverFallbacks != null
+        then cfg.systemResolverFallbacks
+        else effectiveUpstreamServers;
+      resolverChain = lib.concatStringsSep " "
+        ([ cfg.bind ] ++ fallbacks);
+    in lib.mkAfter ''
       for svc in "Wi-Fi" "Thunderbolt Bridge"; do
         /usr/sbin/networksetup -getnetworkserviceenabled "$svc" 2>/dev/null | grep -q Enabled && \
-          /usr/sbin/networksetup -setdnsservers "$svc" ${cfg.bind} 2>/dev/null || true
+          /usr/sbin/networksetup -setdnsservers "$svc" ${resolverChain} 2>/dev/null || true
       done
       /usr/bin/dscacheutil -flushcache 2>/dev/null || true
       /usr/bin/killall -HUP mDNSResponder 2>/dev/null || true
