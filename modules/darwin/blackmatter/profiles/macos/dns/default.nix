@@ -35,10 +35,28 @@ in {
 
             upstreamServers = mkOption {
               type = types.listOf types.str;
-              default = ["1.1.1.1" "8.8.8.8"];
+              default = [
+                # Four operators × two anycast nodes each = 8 servers.
+                # dnsmasq queries them in parallel (`all-servers`) and
+                # picks the fastest answer, so this list is about
+                # *operator* diversity, not just IP diversity — a
+                # single-operator outage doesn't take down resolution.
+                "1.1.1.1"           # Cloudflare primary
+                "1.0.0.1"           # Cloudflare secondary
+                "9.9.9.9"           # Quad9 primary (DNSSEC + malware filter)
+                "149.112.112.112"   # Quad9 secondary
+                "8.8.8.8"           # Google primary
+                "8.8.4.4"           # Google secondary
+                "208.67.222.222"    # OpenDNS / Cisco primary
+                "208.67.220.220"    # OpenDNS / Cisco secondary
+              ];
               description = ''
-                Upstream DNS servers. Overridden when `posture` is set —
-                see that option for the typescape-driven path.
+                Upstream DNS servers dnsmasq forwards non-local queries
+                to. Queried in parallel via the `all-servers` directive
+                (fastest answer wins). Default spans 4 operators × 2
+                anycast nodes for resilience under single-operator
+                outages. Overridden when `posture` is set — see that
+                option for the typescape-driven path.
               '';
             };
 
@@ -163,8 +181,19 @@ in {
             };
 
             systemResolverFallbacks = mkOption {
-              type = types.nullOr (types.listOf types.str);
-              default = null;
+              type = types.listOf types.str;
+              default = [
+                # macOS's system resolver walks the list serially with
+                # a per-server timeout — a dead-then-alive chain costs
+                # ~5s per dead entry. So this list is intentionally
+                # short and high-confidence (different operators, same
+                # tier as the dnsmasq upstreams). Three is plenty:
+                # the probability of all three operators being down
+                # simultaneously is vanishingly small.
+                "1.1.1.1"   # Cloudflare
+                "9.9.9.9"   # Quad9
+                "8.8.8.8"   # Google
+              ];
               description = ''
                 Fallback resolvers appended after `cfg.bind` when the
                 activation script writes the macOS system DNS list for
@@ -178,14 +207,17 @@ in {
                 clients lose connectivity even though raw IPs are
                 reachable).
 
-                Defaults to `null`, which means "inherit the dnsmasq
-                upstream chain" — the same public resolvers dnsmasq
-                forwards to are also installed as system fallbacks.
-                Set to an explicit list to override.
+                Default is intentionally short (3 servers from 3
+                different operators) because macOS walks the list
+                serially with a per-server timeout. The dnsmasq layer
+                already handles upstream resilience in parallel via
+                `upstreamServers`; this list only matters when dnsmasq
+                itself is dead, in which case quick failover beats a
+                long parallel-look-alike walk.
 
                 Set to `[]` to disable fallbacks (not recommended).
               '';
-              example = literalExpression ''[ "1.1.1.1" "8.8.8.8" ]'';
+              example = literalExpression ''[ "1.1.1.1" "9.9.9.9" "8.8.8.8" ]'';
             };
           };
         };
@@ -244,6 +276,19 @@ in {
           text = ''
             # Cache settings
             cache-size=${toString cfg.cacheSize}
+
+            # Don't fall back to /etc/resolv.conf for upstreams —
+            # `server=` directives below are the only allowed sources.
+            # This blocks DHCP-pushed / VPN-injected resolvers from
+            # silently entering the chain.
+            no-resolv
+
+            # Query every wildcard upstream in parallel; fastest answer
+            # wins. With 8 diverse upstreams (4 operators × 2 nodes),
+            # this turns dnsmasq from "first-in-list resolver" into
+            # "race the fastest" — typical answer in ~30-80ms even if
+            # half the upstreams are slow or down.
+            all-servers
 
             ${concatMapStrings (domain: ''
               # Never forward ${domain} queries upstream
@@ -307,12 +352,8 @@ in {
     # This ensures /etc/resolver/* files are still consulted by macOS
     # for local domain resolution.
     system.activationScripts.postActivation.text = let
-      fallbacks =
-        if cfg.systemResolverFallbacks != null
-        then cfg.systemResolverFallbacks
-        else effectiveUpstreamServers;
       resolverChain = lib.concatStringsSep " "
-        ([ cfg.bind ] ++ fallbacks);
+        ([ cfg.bind ] ++ cfg.systemResolverFallbacks);
     in lib.mkAfter ''
       for svc in "Wi-Fi" "Thunderbolt Bridge"; do
         /usr/sbin/networksetup -getnetworkserviceenabled "$svc" 2>/dev/null | grep -q Enabled && \
