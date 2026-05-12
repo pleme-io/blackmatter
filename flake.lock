@@ -296,11 +296,11 @@
         "substrate": "substrate_15"
       },
       "locked": {
-        "lastModified": 1778543788,
-        "narHash": "sha256-AhFED9r4RfZArfA4UyygL9LSEtEs1anebCQBPj/L4K4=",
+        "lastModified": 1778546156,
+        "narHash": "sha256-WJEIP5bdAE5kwIDYSVjXTurjYlSjudJKfMi5pauMrMk=",
         "owner": "pleme-io",
         "repo": "blackmatter-kubernetes",
-        "rev": "c86eaa5a00a30255865fbd9f1fc93a08d7d4a7c1",
+        "rev": "911d01c6227ea243674a164af3c9b39017e782b1",
         "type": "github"
       },
       "original": {
