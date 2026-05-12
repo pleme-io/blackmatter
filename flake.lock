@@ -413,11 +413,11 @@
         "substrate": "substrate_19"
       },
       "locked": {
-        "lastModified": 1778224410,
-        "narHash": "sha256-ViiGGzYGCMFfTY82Hg9Vi07ZZSbnjIw3L8wMXlSdjeg=",
+        "lastModified": 1778594483,
+        "narHash": "sha256-k7o+Vusv4ETNUqvuD0DgD3IsbfLF1xHNzBO+GOEdmxU=",
         "owner": "pleme-io",
         "repo": "blackmatter-pleme",
-        "rev": "cc3a794dd23bdda206fd8a580c8fedd297d9240a",
+        "rev": "5c4d87bbb5b2a4510b7c2b9eff09e3c08ee456c5",
         "type": "github"
       },
       "original": {
