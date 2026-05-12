@@ -197,8 +197,11 @@ in {
         # On Darwin (dev laptops), disable keep-derivations/keep-outputs so GC can
         # reclaim build intermediates. Attic cache makes local retention redundant.
         # On NixOS (servers), keep them for faster rebuilds without cache roundtrips.
-        keep-derivations = mkDefault (!pkgs.stdenv.isDarwin);
-        keep-outputs = mkDefault (!pkgs.stdenv.isDarwin);
+        # Priority: mkOptionDefault (1500) — weakest baseline, so profile-level
+        # opinions (e.g. profiles/darwin/developer-resources in the nix repo)
+        # using mkDefault (1000) win without needing mkForce on either side.
+        keep-derivations = mkOptionDefault (!pkgs.stdenv.isDarwin);
+        keep-outputs = mkOptionDefault (!pkgs.stdenv.isDarwin);
         builders-use-substitutes = true;
 
         # Trust settings
