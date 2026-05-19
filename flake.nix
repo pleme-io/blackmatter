@@ -115,6 +115,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.substrate.follows = "substrate";
     };
+    blackmatter-terraform = {
+      url = "github:pleme-io/blackmatter-terraform";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # Pleme-io native Rust apps — their flakes expose homeManagerModules.default
     # directly (see repo-forge's (defrepo …) catalog). Wired straight in without
@@ -200,6 +204,7 @@
       shell      = inputs.blackmatter-shell;
       tailscale  = inputs.blackmatter-tailscale;
       tend       = inputs.blackmatter-tend;
+      terraform  = inputs.blackmatter-terraform;
       vpn        = inputs.blackmatter-vpn;
     };
 
@@ -306,6 +311,7 @@
         inputs.blackmatter-kubernetes.homeManagerModules.default
         inputs.blackmatter-opencode.homeManagerModules.default
         inputs.blackmatter-tend.homeManagerModules.default
+        inputs.blackmatter-terraform.homeManagerModules.default
         inputs.blackmatter-ayatsuri.homeManagerModules.default
         inputs.blackmatter-pleme.homeManagerModules.default
         # blackmatter-android NOT imported here — it takes pkgs as a
