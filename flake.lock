@@ -221,11 +221,11 @@
         "workspace-config": "workspace-config"
       },
       "locked": {
-        "lastModified": 1779279330,
-        "narHash": "sha256-84QnUj64GMDwYwkouyYrKUbfHqV5upYMKyc92XSBndw=",
+        "lastModified": 1779283248,
+        "narHash": "sha256-hloo+PbwMdn/3y+nDED+l0rWD1ARpAxe4dXJdCLiKk0=",
         "owner": "pleme-io",
         "repo": "blackmatter-ghostty",
-        "rev": "5bba9755cfd2843ed08781bbd66fc2f8f308e61c",
+        "rev": "fcdd7892653c41ee790ea6196696ea745e140c1a",
         "type": "github"
       },
       "original": {
@@ -9013,11 +9013,11 @@
         "rust-overlay": "rust-overlay_10"
       },
       "locked": {
-        "lastModified": 1779276618,
-        "narHash": "sha256-uLPy0ZQz2zUiA5AoCm+LbwhXnTe7WGG5Xf194Dg0kHs=",
+        "lastModified": 1779282943,
+        "narHash": "sha256-qbRDRiDI/539LZH3KJFS25hDudS2Us4Ec1/WCf4foDs=",
         "owner": "cachix",
         "repo": "devenv",
-        "rev": "d47f6e9f3b64049c4701c0443ad0c8dced81f407",
+        "rev": "4b0e7cfa8e05d36c55bbdf34a8849e59cf4fbac2",
         "type": "github"
       },
       "original": {
@@ -9043,11 +9043,11 @@
         "rust-overlay": "rust-overlay_11"
       },
       "locked": {
-        "lastModified": 1779276618,
-        "narHash": "sha256-uLPy0ZQz2zUiA5AoCm+LbwhXnTe7WGG5Xf194Dg0kHs=",
+        "lastModified": 1779282943,
+        "narHash": "sha256-qbRDRiDI/539LZH3KJFS25hDudS2Us4Ec1/WCf4foDs=",
         "owner": "cachix",
         "repo": "devenv",
-        "rev": "d47f6e9f3b64049c4701c0443ad0c8dced81f407",
+        "rev": "4b0e7cfa8e05d36c55bbdf34a8849e59cf4fbac2",
         "type": "github"
       },
       "original": {
