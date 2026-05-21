@@ -410,11 +410,11 @@
         "substrate": "substrate_16"
       },
       "locked": {
-        "lastModified": 1779318572,
-        "narHash": "sha256-f7s/fydTgI841CYr9rmkwD3f1cIqnq6ycBiPMN0KTwo=",
+        "lastModified": 1779322992,
+        "narHash": "sha256-UctHFsk2idNsHtaZh84pF4Kd7/4+GCYqpPlAsw4BPCw=",
         "owner": "pleme-io",
         "repo": "blackmatter-pleme",
-        "rev": "ad28495a41273034698250a1e3306cb566fdbcf3",
+        "rev": "8ede5c40487fd89f9629053bbec50de33a8d7f60",
         "type": "github"
       },
       "original": {
@@ -431,11 +431,11 @@
         "substrate": "substrate_17"
       },
       "locked": {
-        "lastModified": 1779313224,
-        "narHash": "sha256-yNM9OkdmTd+h3bDjJQet9C65ND4yES9qqQpBRvEpXmQ=",
+        "lastModified": 1779323016,
+        "narHash": "sha256-9knXqu73o53ZRwWGmHh2cxZBUaWLxHpmNQVUk4ADGWY=",
         "owner": "pleme-io",
         "repo": "blackmatter-security",
-        "rev": "4dee9d6d2eead7032ea2f1a5c20e6a0b170a3816",
+        "rev": "ff55c9f5ab554441c027441e5dfc378a187d9cde",
         "type": "github"
       },
       "original": {
@@ -46436,11 +46436,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1779299224,
-        "narHash": "sha256-CWxhdisE0d67T2gEemg82Ye1yQlg0B+l8Vp8RV4JMIg=",
+        "lastModified": 1779320072,
+        "narHash": "sha256-R+aCrjazdxRJesSxg4KGxT4FtAHDSQ0W0TG5ygdYTFg=",
         "owner": "pleme-io",
         "repo": "substrate",
-        "rev": "21a54ab7b2100ec76a76af6b683139498b100bf2",
+        "rev": "5175c6aa9b98adbb87f46964f3e4f5f22664d105",
         "type": "github"
       },
       "original": {
@@ -46461,11 +46461,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1779299224,
-        "narHash": "sha256-CWxhdisE0d67T2gEemg82Ye1yQlg0B+l8Vp8RV4JMIg=",
+        "lastModified": 1779320072,
+        "narHash": "sha256-R+aCrjazdxRJesSxg4KGxT4FtAHDSQ0W0TG5ygdYTFg=",
         "owner": "pleme-io",
         "repo": "substrate",
-        "rev": "21a54ab7b2100ec76a76af6b683139498b100bf2",
+        "rev": "5175c6aa9b98adbb87f46964f3e4f5f22664d105",
         "type": "github"
       },
       "original": {
