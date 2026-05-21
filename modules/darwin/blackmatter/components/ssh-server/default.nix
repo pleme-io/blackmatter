@@ -74,17 +74,43 @@ in
         System Settings → General → Sharing → Remote Login →
         "Allow full disk access for remote users".
 
-        Defaults to true so SSH-driven rebuilds (the canonical fleet
-        path) just work. The profile is generated at
-        /var/db/blackmatter/profiles/remote-ssh-fda.mobileconfig and
-        installed via `profiles install` from the activation script.
-        First install on each Mac may require a one-time approval in
-        System Settings → Privacy & Security → Profiles (Apple's
-        TCC consent model — unsigned profiles can't bypass it without
-        MDM enrollment).
+        ★ macOS 14+ / 26+ CONSTRAINT (load-bearing reality):
+        Apple has progressively removed every non-MDM path to install a
+        TCC-bearing `.mobileconfig`:
+          • macOS 14: `profiles install` CLI returns "profiles tool no
+            longer supports installs. Use System Settings Profiles to
+            add configuration profiles."
+          • macOS 15+: double-clicking the .mobileconfig in Finder routes
+            to System Settings → Profiles, where the user can install
+            non-TCC profiles manually.
+          • macOS 26: System Settings rejects TCC-bearing profiles with
+            "The profile must originate from a user approved MDM server."
+        Direct TCC.db edits (sqlite3) are blocked even for root under
+        SIP (TCC kext returns "authorization denied"). `tccutil` only
+        supports `reset`, not `grant`. The activation script keeps the
+        `profiles install` attempt and absorbs its failure with `|| echo`
+        so the rebuild itself succeeds; the FDA grant simply doesn't
+        land. Per-node opt-out: set this option to `false`.
 
-        NixOS-side: irrelevant — Linux has no TCC, sudo over SSH just
-        works.
+        ★ CSE destination: a small pleme-io substrate primitive
+        (working name `cracha-mdm`/`mado-mdm`) — Rust Axum server
+        emitting Apple-signed profiles from a `TataraDomain`, one-time
+        per-Mac enrollment (the one unavoidable GUI click: "Allow
+        Device Management"). Once enrolled, profile pushes are silent
+        and survive macOS upgrades. When that primitive lands, this
+        option's install path will route through MDM and the default
+        of `true` becomes meaningful again.
+
+        ★ Workaround for fleets that need it today: System Settings →
+        Privacy & Security → Full Disk Access → `+` →
+        `/usr/sbin/sshd` and `/usr/libexec/sshd-keygen-wrapper` (use
+        ⌘⇧G in the file picker to reach those paths). ~60 sec one-time
+        per Mac.
+
+        Defaults to true to keep the destination expressed in code,
+        even though the install attempt is currently a no-op on
+        macOS 14+. NixOS-side: irrelevant — Linux has no TCC, sudo
+        over SSH just works.
       '';
     };
   };
