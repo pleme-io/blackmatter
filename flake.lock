@@ -221,11 +221,11 @@
         "workspace-config": "workspace-config"
       },
       "locked": {
-        "lastModified": 1779669076,
-        "narHash": "sha256-1ZdglWgluDqmPafLIX5wUHY797Fn998YcN56z6iagtc=",
+        "lastModified": 1779674124,
+        "narHash": "sha256-Yz/NhG1ZotcJbemFNsAVx664SP/YFHjjRV0ZC2AtcQ8=",
         "owner": "pleme-io",
         "repo": "blackmatter-ghostty",
-        "rev": "ac1db8600a5e44c1cdb43fa5c89f57cc06efeeea",
+        "rev": "db715a75726a8143f7e71752136a7e0c26ad9aeb",
         "type": "github"
       },
       "original": {
@@ -323,11 +323,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1779664226,
-        "narHash": "sha256-14/hb2135sM0e+3jJzgDoWrYyUFt429P9NjG1Nc9rpM=",
+        "lastModified": 1779669129,
+        "narHash": "sha256-wqUXZoEjDeGinYZIsp24QTMkOwJfN14pTTy4U17/vCQ=",
         "owner": "pleme-io",
         "repo": "blackmatter-macos",
-        "rev": "59510b564d6a1cc139b8c68deb539aea267abd8b",
+        "rev": "16411a198799dd77ed1881129252592183a00efc",
         "type": "github"
       },
       "original": {
