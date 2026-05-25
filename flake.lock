@@ -247,11 +247,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1779678050,
-        "narHash": "sha256-AwgLVqyJwO1KV4XeKgEQEr9mhCEps9c7++C9+tJf0Hk=",
+        "lastModified": 1779726369,
+        "narHash": "sha256-AZ7wIXTbXBhWAokqf6Zv4su2Qs8nEQoRJ273JUEkRbg=",
         "owner": "pleme-io",
         "repo": "blackmatter-go",
-        "rev": "1eda28c8b4102f8d327062611ea90aa5bfbff5fa",
+        "rev": "1e4318661155060c208bfd02aeed14f3f0527bd6",
         "type": "github"
       },
       "original": {
@@ -293,11 +293,11 @@
         "substrate": "substrate_12"
       },
       "locked": {
-        "lastModified": 1779719584,
-        "narHash": "sha256-VQAr1BcE3qUyZejle23tx/kxSAjRZjs0yorTgcBJkzQ=",
+        "lastModified": 1779726447,
+        "narHash": "sha256-nsXmIVC+eqlTqVtXCuEWwNSJvPDweUxbPfAnk0/k+CA=",
         "owner": "pleme-io",
         "repo": "blackmatter-kubernetes",
-        "rev": "16dd6c32090d5cdcb100d07a59447cb1cc08f6ad",
+        "rev": "dbdfe1c6ff122076f8a24c498cd4b1653b66cc86",
         "type": "github"
       },
       "original": {
@@ -9375,11 +9375,11 @@
         "rust-overlay": "rust-overlay_17"
       },
       "locked": {
-        "lastModified": 1779636362,
-        "narHash": "sha256-Q/hy/ybvbe91fjA1MbulUwPjJH9yKaFZnSaTkwLE8S0=",
+        "lastModified": 1779717400,
+        "narHash": "sha256-B/jXOCq7m0TlWp1J1mVwlk4qSz4gSa25kDf1D0HqG88=",
         "owner": "cachix",
         "repo": "devenv",
-        "rev": "9d6e68dac81fab1f7f2ec6784220151b4fba4b59",
+        "rev": "3fe1f122a2884a6995014d952d039367d6d77001",
         "type": "github"
       },
       "original": {
