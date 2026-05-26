@@ -431,11 +431,11 @@
         "substrate": "substrate_17"
       },
       "locked": {
-        "lastModified": 1779791802,
-        "narHash": "sha256-f2Kl2v1E7fbk/5g4n5mhs0l72TBkis2SbVEje3DWsfM=",
+        "lastModified": 1779797807,
+        "narHash": "sha256-DJYJGKbZ4KmRgPbP6gT6w78L8dZj/ApAqMlMuNt49v4=",
         "owner": "pleme-io",
         "repo": "blackmatter-security",
-        "rev": "e1de5631bdd0bb3d7d3dab206fa8c3e84d61e915",
+        "rev": "dcc7d793f4f54ad1d8bcf59b621dd55eb6a69131",
         "type": "github"
       },
       "original": {
@@ -46461,11 +46461,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1779782067,
-        "narHash": "sha256-W5inilhRUWC1e7M8tviTPWlO+s/AjWmgHo+YLZrc/f0=",
+        "lastModified": 1779792585,
+        "narHash": "sha256-TKGPu3DA0BK7g+h2I/c2F7IoEer92hnJdrjMfImX5Ms=",
         "owner": "pleme-io",
         "repo": "substrate",
-        "rev": "5a9a154924c8fb7916ab22acf76bdd458ee80106",
+        "rev": "49594e0c21dc5a222f799e4f46e1ae1202864a06",
         "type": "github"
       },
       "original": {
