@@ -207,6 +207,16 @@ in {
         # Trust settings
         trusted-users = ["root" "@wheel" "@admin"] ++ cfg.trustedUsers;
 
+        # Sandbox: relaxed = sandbox by default, but permit __noChroot
+        # opt-outs for trusted users. Required for gen-IFD's
+        # mk-build-spec.nix runCommand which sets __noChroot=true so
+        # `cargo metadata` can reach the crates.io registry index.
+        # The hermetic gen-cargo rewrite (#13) retires the need; until
+        # then, relaxed is the fleet-wide default. Per the GEN
+        # TYPED-SPEC CONTRACT — regeneration is background to rebuild;
+        # this is the sandbox setting that makes it run.
+        sandbox = mkDefault "relaxed";
+
         # Accept flake configuration
         accept-flake-config = cfg.acceptFlakeConfig;
 
