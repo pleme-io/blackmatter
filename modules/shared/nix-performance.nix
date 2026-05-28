@@ -219,22 +219,20 @@ in {
 
         # Extra sandbox-paths required by FODs that resolve DNS inside
         # the sandbox (fetchgit, fetchurl, nix-prefetch-git). Without
-        # these, the FOD's libc resolver has no nsswitch / resolv.conf
-        # / host services tables, and git clone fails with "Could not
-        # resolve host: github.com" — observed on rio (dnsmasq-mediated
-        # resolv.conf on the host, sandbox has no resolv.conf at all).
+        # /etc/resolv.conf, libc's resolver has no nameserver list and
+        # git clone fails with "Could not resolve host: github.com" —
+        # observed on rio (dnsmasq-mediated resolv.conf on the host).
         #
-        # The bind-mounted paths come from the host at sandbox-creation
-        # time, so they pick up live changes to /etc/resolv.conf without
-        # requiring a daemon restart.
+        # ONLY include real files here: NixOS-style symlinks (e.g.
+        # /etc/hosts -> /etc/static/hosts -> /nix/store/...) fail to
+        # bind-mount with "filesystem error: cannot copy: Invalid
+        # argument" — nix's sandbox-paths copy doesn't traverse the
+        # multi-level symlink chain. /etc/resolv.conf is the only
+        # canonical real-file DNS resolver hook; libc finds protocols/
+        # services/hosts via static glibc fallbacks when those entries
+        # are missing.
         extra-sandbox-paths = lib.mkDefault [
           "/etc/resolv.conf"
-          "/etc/nsswitch.conf"
-          "/etc/services"
-          "/etc/protocols"
-          "/etc/hosts"
-          "/etc/ssl/certs/ca-certificates.crt"
-          "/etc/static/ssl/certs/ca-certificates.crt"
         ];
 
         # Accept flake configuration
