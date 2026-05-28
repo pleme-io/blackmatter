@@ -217,6 +217,26 @@ in {
         # this is the sandbox setting that makes it run.
         sandbox = mkDefault "relaxed";
 
+        # Extra sandbox-paths required by FODs that resolve DNS inside
+        # the sandbox (fetchgit, fetchurl, nix-prefetch-git). Without
+        # these, the FOD's libc resolver has no nsswitch / resolv.conf
+        # / host services tables, and git clone fails with "Could not
+        # resolve host: github.com" — observed on rio (dnsmasq-mediated
+        # resolv.conf on the host, sandbox has no resolv.conf at all).
+        #
+        # The bind-mounted paths come from the host at sandbox-creation
+        # time, so they pick up live changes to /etc/resolv.conf without
+        # requiring a daemon restart.
+        extra-sandbox-paths = lib.mkDefault [
+          "/etc/resolv.conf"
+          "/etc/nsswitch.conf"
+          "/etc/services"
+          "/etc/protocols"
+          "/etc/hosts"
+          "/etc/ssl/certs/ca-certificates.crt"
+          "/etc/static/ssl/certs/ca-certificates.crt"
+        ];
+
         # Accept flake configuration
         accept-flake-config = cfg.acceptFlakeConfig;
 
