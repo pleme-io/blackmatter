@@ -112,7 +112,6 @@
     };
     blackmatter-cli = {
       url = "github:pleme-io/blackmatter-cli";
-      inputs.nixpkgs.follows = "nixpkgs";
       inputs.substrate.follows = "substrate";
     };
     blackmatter-terraform = {
