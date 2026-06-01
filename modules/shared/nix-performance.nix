@@ -9,42 +9,30 @@
 with lib; let
   cfg = config.nix.performance;
 
-  # Post-build hook to push to Attic cache.
-  # Uses full store path for attic-client (nix daemon has minimal PATH).
-  # Reads token from file on disk (written by sops-nix) rather than env var
-  # (daemon environment doesn't inherit user session variables).
-  attic = "${pkgs.attic-client}/bin/attic";
-  atticPushHook = pkgs.writeShellScript "attic-push-hook" ''
-    set -eu
-    set -f # disable globbing
-    export IFS=' '
-
-    # Read token from file or inline value
-    ${if cfg.atticCache.tokenFile != null then ''
-    if [ -r "${cfg.atticCache.tokenFile}" ]; then
-      ATTIC_TOKEN="$(cat "${cfg.atticCache.tokenFile}")"
-      export ATTIC_TOKEN
-    fi
-    '' else if cfg.atticCache.authToken != null then ''
-    export ATTIC_TOKEN="${cfg.atticCache.authToken}"
-    '' else ''
-    # No tokenFile or authToken configured — fall back to ATTIC_TOKEN env var
+  # Post-build hook: a thin env+exec wrapper around the unified Rust binary
+  # (dev-tools/nix-hooks → `nix-post-build-hook`), supplied by the consumer
+  # via `nix.performance.atticCache.hookPackage`. The binary owns codesign +
+  # attic push with a SESSION-CACHED login (no per-derivation
+  # "✍️ Overwriting server 'nexus'" noise), a single batched
+  # `attic push --jobs`, and CAPTURED subprocess output (so it never
+  # corrupts the daemon's internal-JSON log stream → no more "bad JSON log
+  # message from the derivation builder" spam). This replaces the old inline
+  # `attic login`/`push` shell hook entirely — there is no shell
+  # implementation of the push logic anymore. When no `hookPackage` is
+  # provided the module emits NO post-build-hook; the consumer wires its own
+  # (e.g. a platform-specific typed owner module).
+  hookWrapper = pkgs.writeShellScript "nix-post-build-hook" ''
+    export NIX_HOOK_CODESIGN="${if pkgs.stdenv.hostPlatform.isDarwin then "1" else "0"}"
+    export ATTIC_CACHE="${cfg.atticCache.cacheName}"
+    export ATTIC_SERVER="${cfg.atticCache.url}"
+    ${optionalString (cfg.atticCache.tokenFile != null) ''
+    export ATTIC_TOKEN_FILE="${cfg.atticCache.tokenFile}"
     ''}
-    if [ -z "''${ATTIC_TOKEN:-}" ]; then
-      echo "Attic: no token available, skipping cache push" >&2
-      exit 0
-    fi
-
-    # Login to cache (creates/updates config)
-    if ! ${attic} login nexus "${cfg.atticCache.url}" "$ATTIC_TOKEN" 2>&1; then
-      echo "Attic: login failed, skipping cache push" >&2
-      exit 0
-    fi
-
-    # Push each built path to the cache
-    for path in $OUT_PATHS; do
-      ${attic} push "${cfg.atticCache.cacheName}" "$path" 2>/dev/null || true
-    done
+    ${optionalString (cfg.atticCache.authToken != null) ''
+    export ATTIC_TOKEN="${cfg.atticCache.authToken}"
+    ''}
+    export PATH="${pkgs.attic-client}/bin:${pkgs.curl}/bin:${pkgs.coreutils}/bin:/usr/bin:$PATH"
+    exec ${cfg.atticCache.hookPackage}/bin/nix-post-build-hook
   '';
 in {
   options = {
@@ -112,6 +100,21 @@ in {
             private GitHub repos. Read by the nix daemon at runtime — root can
             read user-owned 0600 files. Enables both binary cache auth and
             github: flake input fetching for private repos.
+          '';
+        };
+
+        hookPackage = mkOption {
+          type = types.nullOr types.package;
+          default = null;
+          description = ''
+            Package providing the unified `nix-post-build-hook` Rust binary
+            (dev-tools/nix-hooks). When set AND `enablePush` is true, the
+            module emits a thin env+exec post-build-hook wrapping it. When
+            null (the default) NO post-build-hook is emitted — the inline
+            shell implementation was removed, so a consumer that wants the
+            push hook must supply this package (or wire its own typed owner
+            module). This keeps the generic module free of any shell
+            attic-push logic.
           '';
         };
       };
@@ -275,9 +278,12 @@ in {
         netrc-file = ${cfg.atticCache.netrcFile}
         ''}
 
-        # Automatic push to Attic cache after successful builds
-        ${optionalString (cfg.atticCache.enable && cfg.atticCache.enablePush) ''
-        post-build-hook = ${atticPushHook}
+        # Automatic push to Attic cache after successful builds — only when
+        # the consumer supplies the Rust hook binary (hookPackage). No
+        # hookPackage ⇒ no hook emitted here; the shell implementation is
+        # gone for good.
+        ${optionalString (cfg.atticCache.enable && cfg.atticCache.enablePush && cfg.atticCache.hookPackage != null) ''
+        post-build-hook = ${hookWrapper}
         ''}
       '';
     };
