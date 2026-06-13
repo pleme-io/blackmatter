@@ -40,7 +40,14 @@ in {
 
     (mkIf cfg.enable { stylix = {
       enable = true;
-      base16Scheme = "${pkgs.base16-schemes}/share/themes/nord.yaml";
+      # Default: the bundled Nord scheme. The nix repo overrides
+      # `base16SchemePath` with ishou's Borealis base16 output so the
+      # palette is born in ishou (no foreign nord.yaml) — see
+      # themes/nord/default.nix for the option.
+      base16Scheme =
+        if cfg.base16SchemePath != null
+        then cfg.base16SchemePath
+        else "${pkgs.base16-schemes}/share/themes/nord.yaml";
 
       # Wallpaper is required by Stylix. On Darwin it doesn't affect the desktop
       # (macOS manages its own wallpaper), but the option must be set.
