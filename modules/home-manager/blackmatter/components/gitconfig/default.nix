@@ -209,6 +209,15 @@ in {
           autocrlf = input
           ${optionalString cfg.hooks.enable "hooksPath = ~/.config/git/hooks"}
 
+        [credential]
+          # A token-backed `store` (rendered from the github secret) is the ONLY
+          # helper: the empty entry resets the list, dropping the system osxkeychain
+          # helper whose GUI keychain-access prompt repeatedly spams background daemons
+          # (tend and others) that can't reach the login keychain. github auth comes
+          # from the sops-rendered ${config.home.homeDirectory}/.config/git/credentials.
+          helper =
+          helper = store --file ${config.home.homeDirectory}/.config/git/credentials
+
         [fetch]
           prune = true
           prunetagsOnFetch = true
