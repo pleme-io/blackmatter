@@ -42,7 +42,15 @@ in {
     # `systemd.extraConfig` was removed in newer nixpkgs → the freeform
     # `systemd.settings.Manager` renders /etc/systemd/system.conf's [Manager];
     # `systemd.user.extraConfig` is still current for the user manager.
-    systemd.settings.Manager.DefaultLimitNOFILE = "${toString cfg.nofile}:${toString cfg.nofile}";
+    #
+    # `mkForce`: systemLimits is the fleet FD authority (the max-headroom
+    # decision). Other profiles (e.g. blizzard/optimizations) also set
+    # DefaultLimitNOFILE at normal priority — without mkForce the two collide
+    # and FAIL eval on every blizzard node (rio: this broke the rebuild that
+    # would deploy the k3s crash-loop fix, 2026-07-01). systemLimits wins.
+    # TODO(consolidate): blizzard/optimizations should defer its DefaultLimitNOFILE
+    # to systemLimits so FD config lives in exactly one place.
+    systemd.settings.Manager.DefaultLimitNOFILE = mkForce "${toString cfg.nofile}:${toString cfg.nofile}";
     systemd.user.extraConfig = "DefaultLimitNOFILE=${toString cfg.nofile}:${toString cfg.nofile}";
 
     security.pam.loginLimits = [
