@@ -16,16 +16,23 @@ in {
           limits = {
             enable = mkEnableOption "enable macOS resource limits configuration";
 
+            # Canonical fleet ceiling = 2^24 (16,777,216) open files per
+            # process — max headroom by default everywhere (operator decision
+            # 2026-06-30). launchctl bounds `hard` by kern.maxfiles, which the
+            # nix-repo pleme.darwin.profiles.developerResources sysctl raises to
+            # 2^25 (33,554,432). Peer faces: NixOS
+            # blackmatter.components.systemLimits + HM
+            # blackmatter.components.fdLimits.
             maxfiles = {
               soft = mkOption {
                 type = types.int;
-                default = 524288;
+                default = 16777216;
                 description = "Soft limit for maximum open files";
               };
 
               hard = mkOption {
                 type = types.int;
-                default = 10485760;
+                default = 16777216;
                 description = "Hard limit for maximum open files";
               };
             };

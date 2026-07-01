@@ -10,6 +10,7 @@ with lib; {
     ./attic-netrc
     ./aws
     ./env
+    ./fd-limits
     ./git-stack
     ./gitconfig
     ./hammerspoon
