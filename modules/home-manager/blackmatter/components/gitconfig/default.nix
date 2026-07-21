@@ -163,6 +163,54 @@ in {
             '';
           };
 
+          # Per-directory identity override via git's native includeIf
+          # mechanism -- e.g. a different git user.email for every repo
+          # under a given org's workspace path (~/code/<service>/<org>/),
+          # without hand-setting it per-repo or per-commit. Generic and
+          # public by design (no org name/email baked in here) -- the
+          # actual org->identity mapping is user-specific data and
+          # belongs in the private nix repo's node/user config, per the
+          # fleet's own "blackmatter stays generic" layering rule.
+          orgOverrides = mkOption {
+            type = types.attrsOf (types.submodule {
+              options = {
+                gitdir = mkOption {
+                  type = types.str;
+                  description = ''
+                    The gitdir glob this override applies to, passed
+                    verbatim to git's `includeIf "gitdir:<value>"`.
+                    Typically a workspace path under the org's directory,
+                    e.g. "~/code/github/<org>/**".
+                  '';
+                };
+                email = mkOption {
+                  type = types.nullOr types.str;
+                  default = null;
+                  description = "user.email override for repos matching gitdir";
+                };
+                name = mkOption {
+                  type = types.nullOr types.str;
+                  default = null;
+                  description = "user.name override for repos matching gitdir";
+                };
+              };
+            });
+            default = {};
+            description = ''
+              Per-directory git identity overrides, keyed by an
+              arbitrary label (e.g. an org name). Each entry renders a
+              `[includeIf "gitdir:<gitdir>"]` block pointing at a small
+              generated override file -- the global `[user]` section
+              above stays the default identity for everything else.
+            '';
+            example = {
+              akeylesslabs = {
+                gitdir = "~/code/github/akeylesslabs/**";
+                email = "jane@example-corp.com";
+              };
+            };
+          };
+
           hooks = {
             enable = mkOption {
               type = types.bool;
@@ -348,8 +396,30 @@ in {
         ''}
 
         ${cfg.extraConfig}
+
+        ${concatStringsSep "\n" (mapAttrsToList (label: o: ''
+          [includeIf "gitdir:${o.gitdir}"]
+            path = ${config.home.homeDirectory}/.config/git/org-${label}.gitconfig
+        '') cfg.orgOverrides)}
       '';
     }
+
+    # Per-org identity override files -- each referenced by an
+    # [includeIf "gitdir:..."] stanza above. Git applies these on top
+    # of the global [user] section for any repo whose path matches, so
+    # a single override file only needs to declare the fields that
+    # actually differ (email/name), never a full duplicate config.
+    (mkIf (cfg.orgOverrides != {}) {
+      home.file = mapAttrs' (label: o:
+        nameValuePair ".config/git/org-${label}.gitconfig" {
+          text = ''
+            [user]
+            ${optionalString (o.email != null) "  email = ${o.email}"}
+            ${optionalString (o.name != null) "  name = ${o.name}"}
+          '';
+        })
+      cfg.orgOverrides;
+    })
 
     # Install Rust-based git tools
     (mkIf cfg.rustTools.enable {
